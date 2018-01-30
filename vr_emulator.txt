@@ -1,0 +1,2 @@
+If we need more functionality without having the headset, look at:
+https://github.com/thestonefox/VRTK.git
