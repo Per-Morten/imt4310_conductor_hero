@@ -1,52 +1,63 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 // Based on: https://gist.github.com/bzgeb/c298c6189c73b2cf777c
 
 public class Metronome : MonoBehaviour
 {
-	public double bpm = 175.0;
+    public double bpm = 175.0;
 
-	double nextTick = 0.0;
-	bool ticked = true;
+    double nextBeat = 0.0;
+    double prevBeat = 0.0;
 
-	AudioManager manager;
+    bool ticked = true;
 
+    double secondsPerBeat;
 
-	void Start()
-	{
-		double startTick = AudioSettings.dspTime;
+    AudioManager manager;
+    
+    public double OnBeat()
+    {
+        var now = AudioSettings.dspTime;
+        var prevBeatDiff = now - (prevBeat + secondsPerBeat / 2.0);
+        var nextBeatDiff = (nextBeat - secondsPerBeat / 2.0) - now;
 
-		nextTick = startTick + (60.0 / bpm);
+        Debug.Log(string.Format("prev {0} next {1}", prevBeatDiff, nextBeatDiff));
 
-		manager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-		manager.PlayMusic(AudioManager.MusicTrack.conductor_hero_orchestral, nextTick);
-	}
+        return Math.Min(prevBeatDiff, nextBeatDiff);
+    }
 
-	void LateUpdate()
-	{
-		if (!ticked && nextTick >= AudioSettings.dspTime)
-		{
-			ticked = true;
-			manager.PlaySoundEffect(AudioManager.SfxTrack.ButtonPress, AudioSettings.dspTime);
-		}
-	}
+    void Start()
+    {
+        secondsPerBeat = 60.0 / bpm;
 
-	// Just an example OnTick here
-	void OnTick()
-	{
-		Debug.Log("Tick");
-		// GetComponent<AudioSource>().Play();
-	}
+        double startTick = AudioSettings.dspTime;
 
-	void FixedUpdate()
-	{
-		double timePerTick = 60.0f / bpm;
-		double dspTime = AudioSettings.dspTime;
+        nextBeat = startTick + secondsPerBeat;
 
-		while (dspTime >= nextTick)
-		{
-			ticked = false;
-			nextTick += timePerTick;
-		}
-	}
+        manager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        manager.PlayMusic(AudioManager.MusicTrack.conductor_hero_orchestral, nextBeat);
+    }
+
+    void LateUpdate()
+    {
+        if (!ticked && nextBeat >= AudioSettings.dspTime)
+        {
+            ticked = true;
+            manager.PlaySoundEffect(AudioManager.SfxTrack.ButtonPress, AudioSettings.dspTime);
+        }
+    }
+
+    void FixedUpdate()
+    {
+        double dspTime = AudioSettings.dspTime;
+
+        while (dspTime >= nextBeat)
+        {
+            ticked = false;
+            prevBeat = nextBeat;
+            nextBeat += secondsPerBeat;
+        }
+    }
+
 }
