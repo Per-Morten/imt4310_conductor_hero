@@ -9,7 +9,6 @@ public class AudioManager
 {
     public enum InstrumentTrack
     {
-        None,
         conductor_hero_orchestral_layer_bass,
         conductor_hero_orchestral_layer_drums,
         conductor_hero_orchestral_layer_glock,
@@ -43,21 +42,18 @@ public class AudioManager
         m_instruments = new List<AudioSource>();
         foreach (InstrumentTrack value in Enum.GetValues(typeof(InstrumentTrack)))
         {
-            if (value != InstrumentTrack.None)
-            {
-                var source = gameObject.AddComponent<AudioSource>();
-                m_instruments.Add(source);
+            var source = gameObject.AddComponent<AudioSource>();
+            m_instruments.Add(source);
 
-                var val = Resources.Load<AudioClip>("Sounds/" + value.ToString());
-                if (!val)
-                {
-                    Debug.LogWarningFormat("Couldnt find {0} file", value.ToString());
-                }
-                source.clip = val;
+            var val = Resources.Load<AudioClip>("Sounds/" + value.ToString());
+            if (!val)
+            {
+                Debug.LogWarningFormat("Couldnt find {0} file", value.ToString());
             }
+            source.clip = val;
         }
 
-        
+
         sfxTracks = new Dictionary<SfxTrack, AudioClip>();
         foreach (SfxTrack value in Enum.GetValues(typeof(SfxTrack)))
         {
@@ -82,6 +78,11 @@ public class AudioManager
         {
             val.Stop();
         }
+    }
+
+    public void MuteInstrument(InstrumentTrack instrument, bool isMuted)
+    {
+        m_instruments[(int)instrument].mute = isMuted;
     }
 
     public void PlaySoundEffect(SfxTrack track, double time)
