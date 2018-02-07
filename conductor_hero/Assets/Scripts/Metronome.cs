@@ -36,7 +36,7 @@ public class Metronome : MonoBehaviour
         nextBeat = startTick + secondsPerBeat;
 
         manager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        manager.PlayMusic(AudioManager.MusicTrack.conductor_hero_orchestral, nextBeat);
+        manager.PlayMusic(nextBeat);
     }
 
     void LateUpdate()

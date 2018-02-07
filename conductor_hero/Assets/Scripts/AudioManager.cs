@@ -7,45 +7,57 @@ using UnityEngine;
 public class AudioManager
     : MonoBehaviour
 {
-	public enum MusicTrack
+    public enum InstrumentTrack
     {
-		None,
-		conductor_hero_orchestral,
-		conductor_hero_orchestral_debug,
-	};
+        None,
+        conductor_hero_orchestral_layer_bass,
+        conductor_hero_orchestral_layer_drums,
+        conductor_hero_orchestral_layer_glock,
+        conductor_hero_orchestral_layer_harpsichord,
+        conductor_hero_orchestral_layer_oboe,
+        conductor_hero_orchestral_layer_violas_lead,
+        conductor_hero_orchestral_layer_violins_extra,
+        conductor_hero_orchestral_layer_violins_lead
+    };
 
-	public enum SfxTrack
+    public enum SfxTrack
     {
-		None,
-		ButtonPress,
+        None,
+        ButtonPress,
+        conductor_hero_orchestral,
+        conductor_hero_orchestral_debug,
     }
 
     public void Awake()
     {
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.loop = true;
-		//musicSource.mute = true;
-		musicSource.volume = 0.15f;
+        musicSource.mute = true;
+        musicSource.volume = 0.15f;
 
 
-		sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource = gameObject.AddComponent<AudioSource>();
         sfxSource.loop = false;
-		sfxSource.volume = 1.0f;
+        sfxSource.volume = 1.0f;
 
-        musicTracks = new Dictionary<MusicTrack, AudioClip>();
-        foreach (MusicTrack value in Enum.GetValues(typeof(MusicTrack)))
+        m_instruments = new List<AudioSource>();
+        foreach (InstrumentTrack value in Enum.GetValues(typeof(InstrumentTrack)))
         {
-            if (value != MusicTrack.None)
+            if (value != InstrumentTrack.None)
             {
+                var source = gameObject.AddComponent<AudioSource>();
+                m_instruments.Add(source);
+
                 var val = Resources.Load<AudioClip>("Sounds/" + value.ToString());
                 if (!val)
                 {
-                    Debug.LogWarningFormat("Could not load file {0}", value.ToString());
+                    Debug.LogWarningFormat("Couldnt find {0} file", value.ToString());
                 }
-                musicTracks[value] = val;
+                source.clip = val;
             }
         }
 
+        
         sfxTracks = new Dictionary<SfxTrack, AudioClip>();
         foreach (SfxTrack value in Enum.GetValues(typeof(SfxTrack)))
         {
@@ -55,24 +67,18 @@ public class AudioManager
 
     }
 
-	public void PlayMusic(MusicTrack track, double time)
+    public void PlayMusic(double time)
     {
-        if (track != currentMusicTrack)
+        foreach (var val in m_instruments)
         {
-            currentMusicTrack = track;
-
-            musicSource.Stop();
-            musicSource.clip = musicTracks[track];
-			musicSource.PlayScheduled(time);
-            //musicSource.Play();
+            val.PlayScheduled(time);
         }
     }
 
-	public void PlaySoundEffect(SfxTrack track, double time)
+    public void PlaySoundEffect(SfxTrack track, double time)
     {
-        //sfxSource.PlayOneShot(sfxTracks[track]);
-		sfxSource.clip = sfxTracks[track];
-		sfxSource.PlayScheduled(time);
+        sfxSource.clip = sfxTracks[track];
+        sfxSource.PlayScheduled(time);
     }
 
     public bool MuteMusic
@@ -103,7 +109,6 @@ public class AudioManager
     private AudioSource sfxSource;
 
     private Dictionary<SfxTrack, AudioClip> sfxTracks;
-    private MusicTrack currentMusicTrack = MusicTrack.None;
 
-    private Dictionary<MusicTrack, AudioClip> musicTracks;
+    private List<AudioSource> m_instruments;
 }
