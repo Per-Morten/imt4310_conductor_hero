@@ -75,6 +75,15 @@ public class AudioManager
         }
     }
 
+
+    public void StopMusic()
+    {
+        foreach (var val in m_instruments)
+        {
+            val.Stop();
+        }
+    }
+
     public void PlaySoundEffect(SfxTrack track, double time)
     {
         sfxSource.clip = sfxTracks[track];
