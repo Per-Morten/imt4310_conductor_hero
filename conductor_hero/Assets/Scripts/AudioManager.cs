@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Temporary for testing Metronome.
-// This can't actually be used for production as it doesn't support multiple music tracks.
 public class AudioManager
     : MonoBehaviour
 {
@@ -29,15 +27,9 @@ public class AudioManager
 
     public void Awake()
     {
-        musicSource = gameObject.AddComponent<AudioSource>();
-        musicSource.loop = true;
-        musicSource.mute = true;
-        musicSource.volume = 0.15f;
-
-
-        sfxSource = gameObject.AddComponent<AudioSource>();
-        sfxSource.loop = false;
-        sfxSource.volume = 1.0f;
+        m_sfxSource = gameObject.AddComponent<AudioSource>();
+        m_sfxSource.loop = false;
+        m_sfxSource.volume = 1.0f;
 
         m_instruments = new List<AudioSource>();
         foreach (InstrumentTrack value in Enum.GetValues(typeof(InstrumentTrack)))
@@ -53,14 +45,11 @@ public class AudioManager
             source.clip = val;
         }
 
-
-        sfxTracks = new Dictionary<SfxTrack, AudioClip>();
+        m_sfxTracks = new Dictionary<SfxTrack, AudioClip>();
         foreach (SfxTrack value in Enum.GetValues(typeof(SfxTrack)))
         {
-            sfxTracks[value] = Resources.Load<AudioClip>("Sounds/" + value.ToString());
-
+            m_sfxTracks[value] = Resources.Load<AudioClip>("Sounds/" + value.ToString());
         }
-
     }
 
     public void PlayMusic(double time)
@@ -70,7 +59,6 @@ public class AudioManager
             val.PlayScheduled(time);
         }
     }
-
 
     public void StopMusic()
     {
@@ -85,40 +73,35 @@ public class AudioManager
         m_instruments[(int)instrument].mute = isMuted;
     }
 
-    public void PlaySoundEffect(SfxTrack track, double time)
+    public void SetInstrumentVolume(InstrumentTrack instrument, float volume)
     {
-        sfxSource.clip = sfxTracks[track];
-        sfxSource.PlayScheduled(time);
+        m_instruments[(int)instrument].volume = volume;
     }
 
-    public bool MuteMusic
+    public float GetInstrumentVolume(InstrumentTrack instrument)
     {
-        set
-        {
-            musicSource.mute = value;
-        }
-        get
-        {
-            return musicSource.mute;
-        }
+        return m_instruments[(int)instrument].volume;
+    }
+
+    public void PlaySoundEffect(SfxTrack track, double time)
+    {
+        m_sfxSource.clip = m_sfxTracks[track];
+        m_sfxSource.PlayScheduled(time);
     }
 
     public bool MuteSfx
     {
         set
         {
-            sfxSource.mute = value;
+            m_sfxSource.mute = value;
         }
         get
         {
-            return sfxSource.mute;
+            return m_sfxSource.mute;
         }
     }
 
-    private AudioSource musicSource;
-    private AudioSource sfxSource;
-
-    private Dictionary<SfxTrack, AudioClip> sfxTracks;
-
-    private List<AudioSource> m_instruments;
+    AudioSource m_sfxSource;
+    Dictionary<SfxTrack, AudioClip> m_sfxTracks;
+    List<AudioSource> m_instruments;
 }
