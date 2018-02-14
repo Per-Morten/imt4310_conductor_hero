@@ -57,7 +57,11 @@ public class Metronome
             m_beatID++;
             m_ticked = true;
             manager.PlaySoundEffect(AudioManager.SfxTrack.ButtonPress, AudioSettings.dspTime);
-            onBeatTickedCallback(m_beatID);
+
+            if (onBeatTickedCallback != null)
+            {
+                onBeatTickedCallback(m_beatID);
+            }
         }
     }
 

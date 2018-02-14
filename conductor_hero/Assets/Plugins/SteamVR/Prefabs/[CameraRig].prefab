@@ -678,7 +678,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1155609106748714}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.2, z: 0.4}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4460223823931304}
@@ -939,7 +939,7 @@ MonoBehaviour:
   m_motionTrackerReference: {fileID: 0}
   m_defaultMaterial: {fileID: 2100000, guid: 054697abf2501c74d88498f0b8ec5fc9, type: 2}
   m_onTriggerMaterial: {fileID: 2100000, guid: 45c7a8170ed2c0743804d54e96835b21, type: 2}
-  m_onRightOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
+  m_nextInOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
     type: 2}
   m_meshRenderer: {fileID: 23247885165902842}
   m_SphereIndex: 3
@@ -994,7 +994,7 @@ MonoBehaviour:
   m_motionTrackerReference: {fileID: 0}
   m_defaultMaterial: {fileID: 2100000, guid: 054697abf2501c74d88498f0b8ec5fc9, type: 2}
   m_onTriggerMaterial: {fileID: 2100000, guid: 45c7a8170ed2c0743804d54e96835b21, type: 2}
-  m_onRightOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
+  m_nextInOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
     type: 2}
   m_meshRenderer: {fileID: 23375041045529016}
   m_SphereIndex: 2
@@ -1013,7 +1013,7 @@ MonoBehaviour:
   m_motionTrackerReference: {fileID: 0}
   m_defaultMaterial: {fileID: 2100000, guid: 054697abf2501c74d88498f0b8ec5fc9, type: 2}
   m_onTriggerMaterial: {fileID: 2100000, guid: 45c7a8170ed2c0743804d54e96835b21, type: 2}
-  m_onRightOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
+  m_nextInOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
     type: 2}
   m_meshRenderer: {fileID: 23437993620997554}
   m_SphereIndex: 0
@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_motionTrackerReference: {fileID: 0}
   m_defaultMaterial: {fileID: 2100000, guid: 054697abf2501c74d88498f0b8ec5fc9, type: 2}
   m_onTriggerMaterial: {fileID: 2100000, guid: 45c7a8170ed2c0743804d54e96835b21, type: 2}
-  m_onRightOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
+  m_nextInOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
     type: 2}
   m_meshRenderer: {fileID: 23208981826658530}
   m_SphereIndex: 1
