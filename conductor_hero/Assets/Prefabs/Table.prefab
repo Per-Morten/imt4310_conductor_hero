@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 222330633790659028}
   - component: {fileID: 114666196368936298}
   - component: {fileID: 114750752430542632}
+  - component: {fileID: 114607606577947520}
   m_Layer: 5
   m_Name: progBarBG
   m_TagString: Untagged
@@ -188,7 +189,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e7500552b8ba2e643bf6e03ac837723c, type: 2}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -222,7 +223,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 8ee4f94b2e771254bbb07ac5f5043e19, type: 2}
+  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -328,6 +329,19 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114607606577947520
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1410739668156206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d843099aaeeb0f749ad3350a92b2a2c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_fillAmount: 0.4
+  m_view: {fileID: 114649127585163950}
 --- !u!114 &114635057767714500
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -363,7 +377,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 78a33e759e97d8248a30963866c2a01c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ab9f4685ef87e4f4ca966557483bfd5f, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -390,7 +404,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 78a33e759e97d8248a30963866c2a01c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ab9f4685ef87e4f4ca966557483bfd5f, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
