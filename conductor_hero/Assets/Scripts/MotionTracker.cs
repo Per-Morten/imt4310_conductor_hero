@@ -75,8 +75,11 @@ public class MotionTracker : MonoBehaviour
     {
         // Input Handling
 
-        // Ask Metronome whether what beatID
-        // if metronome.beatID
+        // Beat logic
+        if (m_metronome.beatID - 1 != nextSphereIndex)
+        {
+            nextSphereIndex = m_metronome.beatID - 1;
+        }
     }
 
     // TODO: Rename this, but first, find a better name
