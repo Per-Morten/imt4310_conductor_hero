@@ -8,7 +8,7 @@ public class MotionTrackerSphere : MonoBehaviour
 
     public Material m_defaultMaterial;
     public Material m_onTriggerMaterial;
-    public Material m_onRightOrderMaterial;
+    public Material m_nextInOrderMaterial;
 
     public MeshRenderer m_meshRenderer;
 

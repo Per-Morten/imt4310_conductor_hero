@@ -13,21 +13,46 @@ public class MotionTracker : MonoBehaviour
 
     [Header("Other")]
     public GameObject m_HMD;
+    public Metronome m_metronome;
 
     [SerializeField]
     private Transform m_targetTransform;
 
-    private int m_nextSphereIndex = 0;
-    private const int MAX_INDICES = 3;
+    private const int NUM_BEATS = 4;
 
-    // NOTE: What should we do if you somehow lose your beat?
-    //       Reset m_nextSphereIndex to 0 at the end of every 4th beat?
+    public int nextSphereIndex
+    {
+        get
+        {
+            return m_nextSphereIndex;
+        }
+        set
+        {
+            // Wraps around for simplicity
+            if(value > NUM_BEATS - 1)
+            {
+                m_nextSphereIndex = 0;
+            }
+            else
+            {
+                m_nextSphereIndex = value;
+            }
+        }
+    }
+    private int m_nextSphereIndex = 0;
+
+    private const int MAX_INDICES = 3;
+    
     public void OnSphereCollision(int sphereIndex, MotionTrackerSphere sphere)
     {
         if(sphereIndex == m_nextSphereIndex)
         {
-            IncrementNextSphereIndex();
-            sphere.m_meshRenderer.material = sphere.m_onRightOrderMaterial;
+            sphere.m_meshRenderer.material = sphere.m_nextInOrderMaterial;
+
+            // TODO: Ask Metronome whether we're on beat
+            // Quality of being on beat could be decided in GameManager script I guess?
+            // Give some visual feedback for testing purposes. 
+            // Excellent! Good. Miss. or something
         }
     }
 
@@ -40,17 +65,6 @@ public class MotionTracker : MonoBehaviour
         }
     }
 
-    // TODO: Rename this, but first, find a better name
-    private void OnPointerIn(object o, PointerEventArgs e)
-    {
-        m_targetTransform = e.target.transform;
-    }
-
-    private void OnPointerOut(object o, PointerEventArgs e)
-    {
-        m_targetTransform = null;
-    }
-
     private void Start()
     {
         m_leftControllerPointer.PointerIn += new PointerEventHandler(OnPointerIn);
@@ -60,5 +74,19 @@ public class MotionTracker : MonoBehaviour
     private void Update()
     {
         // Input Handling
+
+        // Ask Metronome whether what beatID
+        // if metronome.beatID
+    }
+
+    // TODO: Rename this, but first, find a better name
+    private void OnPointerIn(object o, PointerEventArgs e)
+    {
+        m_targetTransform = e.target.transform;
+    }
+
+    private void OnPointerOut(object o, PointerEventArgs e)
+    {
+        m_targetTransform = null;
     }
 }

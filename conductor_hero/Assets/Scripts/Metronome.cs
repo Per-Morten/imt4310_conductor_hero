@@ -7,6 +7,8 @@ public class Metronome : MonoBehaviour
 {
     public double bpm = 175.0;
 
+    public delegate void OnBeatEvent();
+
     double nextBeat = 0.0;
     double prevBeat = 0.0;
 
@@ -15,7 +17,7 @@ public class Metronome : MonoBehaviour
     double secondsPerBeat;
 
     AudioManager manager;
-    
+
     public double OnBeat()
     {
         var now = AudioSettings.dspTime;
