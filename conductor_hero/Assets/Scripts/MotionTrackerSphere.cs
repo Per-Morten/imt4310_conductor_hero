@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class MotionTrackerSphere : MonoBehaviour
 {
-    [SerializeField]
-    private Material m_defaultMaterial;
-    [SerializeField]
-    private Material m_onTriggerMaterial;
+    public MotionTracker m_motionTrackerReference; 
+
+    public Material m_defaultMaterial;
+    public Material m_onTriggerMaterial;
+    public Material m_onRightOrderMaterial;
+
+    public MeshRenderer m_meshRenderer;
 
     [SerializeField]
     private int m_SphereIndex = 0;
 
-    private MeshRenderer m_meshRenderer;
+    [SerializeField][Range(0, 100)]
+    private int m_volumeLevel = 100;
 
     // Use this for initialization
     void Start()
     {
-        m_meshRenderer = GetComponent<MeshRenderer>();
         m_meshRenderer.material = m_defaultMaterial;
     }
 
@@ -29,11 +32,18 @@ public class MotionTrackerSphere : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        m_meshRenderer.material = m_onTriggerMaterial;
+        if (other.CompareTag("ConductorBaton"))
+        {
+            m_meshRenderer.material = m_onTriggerMaterial;
+            m_motionTrackerReference.OnSphereCollision(m_SphereIndex, this);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        m_meshRenderer.material = m_defaultMaterial;
+        if (other.CompareTag("ConductorBaton"))
+        {
+            m_meshRenderer.material = m_defaultMaterial;
+        }
     }
 }
