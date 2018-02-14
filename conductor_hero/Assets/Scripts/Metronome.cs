@@ -3,7 +3,8 @@ using UnityEngine;
 
 // Based on: https://gist.github.com/bzgeb/c298c6189c73b2cf777c
 
-public class Metronome : MonoBehaviour
+public class Metronome
+    : MonoBehaviour
 {
     public double bpm = 175.0;
 
@@ -43,7 +44,7 @@ public class Metronome : MonoBehaviour
         m_nextBeat = startTick + m_secondsPerBeat;
 
         manager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        manager.PlayMusic(AudioManager.MusicTrack.conductor_hero_orchestral, m_nextBeat);
+        manager.PlayMusic(m_nextBeat);
     }
 
     void LateUpdate()
