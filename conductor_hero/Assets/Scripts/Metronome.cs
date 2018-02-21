@@ -3,24 +3,35 @@ using UnityEngine;
 
 // Based on: https://gist.github.com/bzgeb/c298c6189c73b2cf777c
 
-public class Metronome : MonoBehaviour
+public class Metronome
+    : MonoBehaviour
 {
+    public delegate void OnBeatTickCallback(int updatedBeatID);
+    public OnBeatTickCallback onBeatTickedCallback;
+
     public double bpm = 175.0;
 
-    double nextBeat = 0.0;
-    double prevBeat = 0.0;
+    double m_nextBeat = 0.0;
+    double m_prevBeat = 0.0;
 
-    bool ticked = true;
+    int m_beatID = 0;
 
-    double secondsPerBeat;
+    bool m_ticked = true;
+
+    double m_secondsPerBeat = 0;
 
     AudioManager manager;
+
+    public int beatID
+    {
+        get { return m_beatID; }
+    }
     
     public double OnBeat()
     {
         var userClick = AudioSettings.dspTime;
-        var nextToUser = userClick - Math.Abs(nextBeat);
-        var prevToUser = userClick - Math.Abs(prevBeat);
+        var nextToUser = userClick - Math.Abs(m_nextBeat);
+        var prevToUser = userClick - Math.Abs(m_prevBeat);
 
         if (Math.Abs(nextToUser) < Math.Abs(prevToUser))
         {
@@ -34,22 +45,28 @@ public class Metronome : MonoBehaviour
 
     void Start()
     {
-        secondsPerBeat = 60.0 / bpm;
+        m_secondsPerBeat = 60.0 / bpm;
 
         double startTick = AudioSettings.dspTime;
 
-        nextBeat = startTick + secondsPerBeat;
+        m_nextBeat = startTick + m_secondsPerBeat;
 
         manager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        manager.PlayMusic(nextBeat);
+        manager.PlayMusic(m_nextBeat);
     }
 
     void LateUpdate()
     {
-        if (!ticked && nextBeat >= AudioSettings.dspTime)
+        if (!m_ticked && m_nextBeat >= AudioSettings.dspTime)
         {
-            ticked = true;
+            m_beatID++;
+            m_ticked = true;
             manager.PlaySoundEffect(AudioManager.SfxTrack.ButtonPress, AudioSettings.dspTime);
+
+            if (onBeatTickedCallback != null)
+            {
+                onBeatTickedCallback(m_beatID);
+            }
         }
     }
 
@@ -57,12 +74,11 @@ public class Metronome : MonoBehaviour
     {
         double dspTime = AudioSettings.dspTime;
 
-        while (dspTime >= nextBeat)
+        while (dspTime >= m_nextBeat)
         {
-            ticked = false;
-            prevBeat = nextBeat;
-            nextBeat += secondsPerBeat;
+            m_ticked = false;
+            m_prevBeat = m_nextBeat;
+            m_nextBeat += m_secondsPerBeat;
         }
     }
-
 }
