@@ -16,12 +16,12 @@ public class MotionTracker : MonoBehaviour
 
     [Header("Conductor Simulator Related")]
     public Metronome m_metronome;
-    public GameObject particlePrefab;
+    public GameObject m_particlePrefab;
 
-    public GameObject sphereContainer;
-    private List<MotionTrackerSphere> trackerSpheres;
+    public GameObject m_sphereContainer;
+    private List<MotionTrackerSphere> m_trackerSpheres;
 
-    private const int TIME_SIGNATURE = 4;
+    private const int NUM_BEATS_PER_MEASURE = 4;
 
     public int nextSphereIndex
     {
@@ -32,7 +32,7 @@ public class MotionTracker : MonoBehaviour
         set
         {
             // Wraps around for simplicity
-            if(value > TIME_SIGNATURE - 1)
+            if(value > NUM_BEATS_PER_MEASURE - 1)
             {
                 m_nextSphereIndex = 0;
             }
@@ -52,7 +52,7 @@ public class MotionTracker : MonoBehaviour
         m_leftControllerPointer.PointerIn += new PointerEventHandler(OnPointerIn);
         m_leftControllerPointer.PointerOut += new PointerEventHandler(OnPointerOut);
         m_metronome.onBeatTickedCallback += MetronomeCallback;
-        trackerSpheres = new List<MotionTrackerSphere>(sphereContainer.GetComponentsInChildren<MotionTrackerSphere>());
+        m_trackerSpheres = new List<MotionTrackerSphere>(m_sphereContainer.GetComponentsInChildren<MotionTrackerSphere>());
     }
 
     private void Update()
@@ -68,7 +68,7 @@ public class MotionTracker : MonoBehaviour
             // Give some visual feedback for testing purposes. 
             // Excellent! Good. Miss. or something
             var collisionToBeatDifference = m_metronome.OnBeat();
-            Instantiate(particlePrefab, sphere.transform);
+            Instantiate(m_particlePrefab, sphere.transform);
 
             // This will be reset if we are too late currently. 
             // Quickfix for being able to hit a bit before beat
@@ -76,12 +76,13 @@ public class MotionTracker : MonoBehaviour
         }
     }
 
+    // Gets called on every metronome beat. 
     public void MetronomeCallback(int beatID)
     {
-        nextSphereIndex = (beatID % TIME_SIGNATURE) + 1;
+        nextSphereIndex = (beatID % NUM_BEATS_PER_MEASURE) + 1;
 
         // Update visuals
-        foreach (var sphere in trackerSpheres)
+        foreach (var sphere in m_trackerSpheres)
         {
             if (sphere.m_SphereIndex == nextSphereIndex)
             {
@@ -103,6 +104,7 @@ public class MotionTracker : MonoBehaviour
         }
     }
 
+    #region PointedObjectCallbacks
     // TODO: Rename this, but first, find a better name
     private void OnPointerIn(object o, PointerEventArgs e)
     {
@@ -113,4 +115,5 @@ public class MotionTracker : MonoBehaviour
     {
         m_targetTransform = null;
     }
+    #endregion
 }

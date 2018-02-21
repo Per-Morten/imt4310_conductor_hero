@@ -223,7 +223,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 054697abf2501c74d88498f0b8ec5fc9, type: 2}
+  - {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -410,10 +410,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd921d4d4fb618479619e8a692c7601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_motionTrackerReference: {fileID: 0}
   m_defaultMaterial: {fileID: 2100000, guid: 054697abf2501c74d88498f0b8ec5fc9, type: 2}
   m_onTriggerMaterial: {fileID: 2100000, guid: 45c7a8170ed2c0743804d54e96835b21, type: 2}
+  m_nextInOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
+    type: 2}
+  m_meshRenderer: {fileID: 23790719534911542}
   m_SphereIndex: 1
-  volumeLevel: 100
+  m_volumeLevel: 100
 --- !u!114 &114541485498212138
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -425,10 +429,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd921d4d4fb618479619e8a692c7601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_motionTrackerReference: {fileID: 0}
   m_defaultMaterial: {fileID: 2100000, guid: 054697abf2501c74d88498f0b8ec5fc9, type: 2}
   m_onTriggerMaterial: {fileID: 2100000, guid: 45c7a8170ed2c0743804d54e96835b21, type: 2}
+  m_nextInOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
+    type: 2}
+  m_meshRenderer: {fileID: 23236826168853240}
   m_SphereIndex: 2
-  volumeLevel: 100
+  m_volumeLevel: 100
 --- !u!114 &114761312592645532
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -440,10 +448,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd921d4d4fb618479619e8a692c7601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_motionTrackerReference: {fileID: 0}
   m_defaultMaterial: {fileID: 2100000, guid: 054697abf2501c74d88498f0b8ec5fc9, type: 2}
   m_onTriggerMaterial: {fileID: 2100000, guid: 45c7a8170ed2c0743804d54e96835b21, type: 2}
+  m_nextInOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
+    type: 2}
+  m_meshRenderer: {fileID: 23434573260558386}
   m_SphereIndex: 3
-  volumeLevel: 100
+  m_volumeLevel: 100
 --- !u!114 &114992104588841026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -455,10 +467,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd921d4d4fb618479619e8a692c7601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_motionTrackerReference: {fileID: 0}
   m_defaultMaterial: {fileID: 2100000, guid: 054697abf2501c74d88498f0b8ec5fc9, type: 2}
   m_onTriggerMaterial: {fileID: 2100000, guid: 45c7a8170ed2c0743804d54e96835b21, type: 2}
+  m_nextInOrderMaterial: {fileID: 2100000, guid: 8f3617ef4f7ddfa42aa0fd53e401f5d3,
+    type: 2}
+  m_meshRenderer: {fileID: 23633958416704476}
   m_SphereIndex: 0
-  volumeLevel: 100
+  m_volumeLevel: 100
 --- !u!135 &135475752965688714
 SphereCollider:
   m_ObjectHideFlags: 1
