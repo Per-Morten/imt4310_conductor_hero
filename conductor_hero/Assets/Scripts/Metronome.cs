@@ -18,13 +18,18 @@ public class Metronome : MonoBehaviour
     
     public double OnBeat()
     {
-        var now = AudioSettings.dspTime;
-        var prevBeatDiff = now - (prevBeat + secondsPerBeat / 2.0);
-        var nextBeatDiff = (nextBeat - secondsPerBeat / 2.0) - now;
+        var userClick = AudioSettings.dspTime;
+        var nextToUser = userClick - Math.Abs(nextBeat);
+        var prevToUser = userClick - Math.Abs(prevBeat);
 
-        Debug.Log(string.Format("prev {0} next {1}", prevBeatDiff, nextBeatDiff));
-
-        return Math.Min(prevBeatDiff, nextBeatDiff);
+        if (Math.Abs(nextToUser) < Math.Abs(prevToUser))
+        {
+            return nextToUser;
+        }
+        else
+        {
+            return prevToUser;
+        }
     }
 
     void Start()
