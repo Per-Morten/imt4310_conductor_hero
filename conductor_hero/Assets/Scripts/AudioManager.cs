@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class AudioManager
     : MonoBehaviour
@@ -83,10 +84,33 @@ public class AudioManager
         return m_instruments[(int)instrument].volume;
     }
 
+    public void SetInstrumentsVolume(float vol)
+    {
+        foreach (AudioSource value in m_instruments)
+        {
+            value.volume = vol;
+        }
+    }
+
+    public float GetSonglength()
+    {
+        return m_instruments[2].clip.length;
+    }
+
+    public float GetCurrentPlaybackPosition()
+    {
+        return m_instruments[2].time;
+    }
+
     public void PlaySoundEffect(SfxTrack track, double time)
     {
         m_sfxSource.clip = m_sfxTracks[track];
         m_sfxSource.PlayScheduled(time);
+    }
+
+    public InstrumentTrack GetFirstInstrument() {
+        var firstInstrument = Enum.GetValues(typeof(InstrumentTrack)).Cast<InstrumentTrack>().FirstOrDefault();
+        return firstInstrument; 
     }
 
     public bool MuteSfx
