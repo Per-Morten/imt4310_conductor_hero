@@ -37,15 +37,14 @@ public class GameManager
 
     void OnBeat(int beatID)
     {
-        //Debug.LogFormat("BeatID{0}", beatID);
         if (m_sectionsToCueOnBeat.ContainsKey(beatID))
         {
-            //Debug.LogFormat("In if statement");
             int index = (int)m_sectionsToCueOnBeat[beatID];
-
-
-            // - 1 because we are on the beat where this will happen
-            m_cueSignals[index].ReInit(m_cueCountdown - 1, m_sectionsToCueOnBeat[beatID], m_audioManager);
+            m_cueSignals[index].ReInit(m_cueCountdown, m_sectionsToCueOnBeat[beatID], m_audioManager, m_metronome);
+        }
+        foreach (var cue in m_cueSignals)
+        {
+            cue.OnBeat(beatID);
         }
     }
 

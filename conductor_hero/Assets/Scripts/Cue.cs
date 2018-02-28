@@ -12,16 +12,16 @@ public class Cue
 {
     public void Start()
     {
-        GameObject.Find("Metronome").GetComponent<Metronome>().onBeatTickedCallback += new Metronome.OnBeatTickCallback(OnBeat);
         m_text = gameObject.GetComponentInChildren<Text>();
+        m_trailRenderer = gameObject.GetComponentInChildren<TrailRenderer>();
     }
 
-    public void ReInit(int countdown, AudioManager.Instrument trackToUnmute, AudioManager audioManager)
+    public void ReInit(int countdown, AudioManager.Instrument trackToUnmute, AudioManager audioManager, Metronome metronome)
     {
-        // Log which beat id it is here.
         m_beatCountdown = countdown;
         m_trackToUnmute = trackToUnmute;
         m_audioManager = audioManager;
+        m_metronome = metronome;
 
         Renderer r = gameObject.GetComponent<Renderer>();
         r.material.color = new Color(0.5f, 0.5f, 1.0f);
@@ -48,32 +48,28 @@ public class Cue
 
         if (m_state == State.failed)
             PlayFailAnimation();
-
-        // Sort of doing two modes here really, going out of the board, up to the user, and displaying the countdown.
-        // if (m_mode == Mode.countdown)
-        //     DisplayCountdown();
-
-
     }
 
     public void OnBeat(int beatID)
     {
         m_beatCountdown--;
-        // Switch state
         if (m_beatCountdown == 4)
         {
-            TransitionToState(State.countdown);   
+            TransitionToState(State.countdown);
         }
-        if (m_state == State.countdown && m_beatCountdown <= -2 && !m_isHit)
+
+        // Debug fail state
+        if (m_state == State.countdown && m_beatCountdown <= -2)
         {
             TransitionToState(State.failed);
         }
+
+        // Muting instrument to ensure that the track is not playing from before
         if (m_beatCountdown == 2)
         {
             m_audioManager.MuteInstrument(m_trackToUnmute, true);
         }
 
-        // Should we potentially also mute instrument here 1 beat before it starts, to ensure that the instrument isn't on when cued?
         if (m_state == State.countdown)
         {
             m_text.text = m_beatCountdown.ToString();
@@ -94,14 +90,23 @@ public class Cue
     private void TransitionToState(State state)
     {
         // TODO: REFACTOR THIS SHIT!
+        m_trailRenderer.enabled = false;
         m_state = state;
+        if (state == State.countdown)
+        {
+            m_angle = 0.0f;
+            m_trailRenderer.enabled = true;
+
+            m_rotationSpeed = 360.0f / ((60.0f / (float)m_metronome.bpm) * 4.0f);
+        }
         if (state == State.rising)
         {
             m_startTime = (float)AudioSettings.dspTime;
             m_length = Vector3.Distance(idlePosition.position, countdownPosition.position);
 
-            // 4 beats before it starts
-            m_speed = m_length / ((m_startTime + (60.0f / 165.0f) * 3.0f) - m_startTime);
+            // Multiplied by 3.0f instead of 4, as we are curently "in" a beat, 
+            // and therefore only have 3 beats left to cover distance.
+            m_speed = m_length / ((60.0f / (float)m_metronome.bpm) * 3.0f);
             gameObject.transform.position = idlePosition.position;
         }
         if (state == State.success)
@@ -146,7 +151,12 @@ public class Cue
 
     private void PlayCountdownAnimation()
     {
-        
+        if (m_angle <= 360.0f)
+        {
+            m_angle += Time.deltaTime * m_rotationSpeed;
+        }
+
+        transform.rotation = Quaternion.AngleAxis(m_angle, Vector3.forward);
     }
 
     private void ReactToHit()
@@ -156,15 +166,14 @@ public class Cue
 
         // Should use beatID in addition to countdown
         // But need to wait until that functionality is there
-        if (m_beatCountdown >= -1 && m_beatCountdown <= 1)
-        //if (m_beatCountdown == 0)
+        //if (m_beatCountdown >= -1 && m_beatCountdown <= 1)
+        if (m_beatCountdown == 0)
         {
             Debug.LogFormat("You hit!");
             Renderer r = gameObject.GetComponent<Renderer>();
             r.material.color = new Color(0.0f, 1.0f, 0.0f);
 
             m_audioManager.MuteInstrument(m_trackToUnmute, false);
-            m_isHit = true;
             TransitionToState(State.success);
         }
     }
@@ -180,9 +189,13 @@ public class Cue
 
     AudioManager m_audioManager;
     AudioManager.Instrument m_trackToUnmute;
+    Metronome m_metronome;
+
     int m_beatCountdown;
-    bool m_isHit;
     State m_state;
+
+    float m_angle;
+    float m_rotationSpeed;
 
     float m_startTime;
     float m_speed;
@@ -190,6 +203,8 @@ public class Cue
     float m_length;
 
     Text m_text;
+
+    TrailRenderer m_trailRenderer;
 
     [SerializeField]
     Transform countdownPosition;
