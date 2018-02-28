@@ -26,7 +26,7 @@ public class MotionTracker : MonoBehaviour
     private const int NUM_BEATS_PER_MEASURE = 4;
 
     [SerializeField]
-    GameManager gameManager;
+    GameManager gm;
 
     private const int MAX_INDICES = 3;
     private Transform m_targetTransform;
@@ -88,7 +88,8 @@ public class MotionTracker : MonoBehaviour
             {
                 // Give some visual feedback
                 Instantiate(m_particlePrefab, sphere.transform);
-                gameManager.AddScore(1);
+
+                gm.AddScore(1, 1);
             }
             else
             {
@@ -96,6 +97,8 @@ public class MotionTracker : MonoBehaviour
                 var particleObject = Instantiate(m_particlePrefab, sphere.transform);
                 var mainSystem = particleObject.GetComponent<ParticleSystem>().main;
                 mainSystem.startColor =  new Color(255, 0, 0, 1);
+
+                gm.AddScore(0, 1);
             }
 
             // This will be reset if we are too late currently. 
@@ -104,10 +107,6 @@ public class MotionTracker : MonoBehaviour
 
             // We want to avoid cases where the index is reset back a value due to a callback when we were early
             m_nextSphereIndexStuct.m_alreadyUpdated = true;
-
-            // Bug: Red first on early, then green a few frames later
-            // hitting early on 1 means nextSphereIndex gets set to 2 and red is instanitated
-            // MetronomeCallback is called a few frames later and nextSphereIndex is set back to 1, triggering green and setting nextSphereIndex to 2 again 
         }
     }
 

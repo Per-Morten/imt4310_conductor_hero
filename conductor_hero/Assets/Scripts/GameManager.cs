@@ -50,10 +50,12 @@ public class GameManager
     }
 
 
-    public void AddScore(int points)
+    public void AddScore(int points, int total_points)
     {
         m_score += points;
-        Debug.Log(string.Format("Points: {0}",  m_score));
+        m_total_score += total_points;
+
+        Debug.Log(string.Format("Points: {0}, Total: {1}",  m_score, m_total_score));       
     }
 
     // Responsibilities
@@ -81,4 +83,5 @@ public class GameManager
     Metronome m_metronome;
 
     int m_score;
+    int m_total_score;
 }
