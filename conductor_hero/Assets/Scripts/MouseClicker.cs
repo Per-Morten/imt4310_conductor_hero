@@ -25,18 +25,18 @@ public class MouseClicker : MonoBehaviour
 
             if (timing < -0.09f)
             {
-                gm.AddScore(-3);
                 Debug.Log(string.Format("Closer to next beat {0}", timing));
+                gm.AddScore(0, 1);
             }
             else if(timing > 0.09f)
             {
-                gm.AddScore(-3);
                 Debug.Log(string.Format("Closer to previous beat {0}", timing));
+                gm.AddScore(0, 1);
             }
             else
-            {
-                gm.AddScore(10);
+            { 
                 Debug.Log(string.Format("On beat{0}", timing));
+                gm.AddScore(1, 1);
             }
         }
     }
