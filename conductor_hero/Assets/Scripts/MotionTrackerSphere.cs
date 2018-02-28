@@ -11,9 +11,8 @@ public class MotionTrackerSphere : MonoBehaviour
     public Material m_nextInOrderMaterial;
 
     public MeshRenderer m_meshRenderer;
-
-    [SerializeField]
-    private int m_SphereIndex = 0;
+    
+    public int m_SphereIndex = 0;
 
     [SerializeField][Range(0, 100)]
     private int m_volumeLevel = 100;
@@ -30,11 +29,11 @@ public class MotionTrackerSphere : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("ConductorBaton"))
         {
-            m_meshRenderer.material = m_onTriggerMaterial;
+            //m_meshRenderer.material = m_onTriggerMaterial;
             m_motionTrackerReference.OnSphereCollision(m_SphereIndex, this);
         }
     }
@@ -43,7 +42,7 @@ public class MotionTrackerSphere : MonoBehaviour
     {
         if (other.CompareTag("ConductorBaton"))
         {
-            m_meshRenderer.material = m_defaultMaterial;
+            //m_meshRenderer.material = m_defaultMaterial;
         }
     }
 }

@@ -18,12 +18,20 @@ public class MouseClicker : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             var timing = met.OnBeat();
-            //if (timing <= -0.05f)
-            //    Debug.Log(string.Format("To early {0}", timing));
-            //else if (timing >= 0.05f)
-            //    Debug.Log(string.Format("To late {0}", timing));
-            //else
-            //    Debug.Log(string.Format("On Beat {0}", timing));
+
+            if (timing < -0.09f)
+            {
+                Debug.Log(string.Format("Closer to next beat {0}", timing));
+            }
+            else if(timing > 0.09f)
+            {
+                Debug.Log(string.Format("Closer to previous beat {0}", timing));
+            }
+            else
+            {
+                Debug.Log(string.Format("On beat{0}", timing));
+            }
+
 
         }
     }

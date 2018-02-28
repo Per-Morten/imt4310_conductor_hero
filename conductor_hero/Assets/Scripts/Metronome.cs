@@ -29,13 +29,18 @@ public class Metronome
     
     public double OnBeat()
     {
-        var now = AudioSettings.dspTime;
-        var prevBeatDiff = now - (m_prevBeat + m_secondsPerBeat / 2.0);
-        var nextBeatDiff = (m_nextBeat - m_secondsPerBeat / 2.0) - now;
+        var userClick = AudioSettings.dspTime;
+        var nextToUser = userClick - Math.Abs(m_nextBeat);
+        var prevToUser = userClick - Math.Abs(m_prevBeat);
 
-        Debug.Log(string.Format("prev {0} next {1}", prevBeatDiff, nextBeatDiff));
-
-        return Math.Min(prevBeatDiff, nextBeatDiff);
+        if (Math.Abs(nextToUser) < Math.Abs(prevToUser))
+        {
+            return nextToUser;
+        }
+        else
+        {
+            return prevToUser;
+        }
     }
 
     void Start()
@@ -57,7 +62,11 @@ public class Metronome
             m_beatID++;
             m_ticked = true;
             manager.PlaySoundEffect(AudioManager.SfxTrack.ButtonPress, AudioSettings.dspTime);
-            onBeatTickedCallback(m_beatID);
+
+            if (onBeatTickedCallback != null)
+            {
+                onBeatTickedCallback(m_beatID);
+            }
         }
     }
 
@@ -72,5 +81,4 @@ public class Metronome
             m_nextBeat += m_secondsPerBeat;
         }
     }
-
 }
