@@ -19,14 +19,14 @@ public class GameManager
             { 54, Instrument.violins_extra }
         };
 
-        m_cueSignals = new List<Cue>
-        {
-            GameObject.Find("Sphere").GetComponent<Cue>(),
-            GameObject.Find("Sphere (1)").GetComponent<Cue>(),
-            GameObject.Find("Sphere (2)").GetComponent<Cue>(),
-            GameObject.Find("Sphere (3)").GetComponent<Cue>(),
+        //m_cueSignals = new List<Cue>
+        //{
+        //    GameObject.Find("Sphere").GetComponent<Cue>(),
+        //    GameObject.Find("Sphere (1)").GetComponent<Cue>(),
+        //    GameObject.Find("Sphere (2)").GetComponent<Cue>(),
+        //    GameObject.Find("Sphere (3)").GetComponent<Cue>(),
 
-        };
+        //};
 
 
         m_metronome = GameObject.Find("Metronome").GetComponent<Metronome>();
@@ -48,15 +48,22 @@ public class GameManager
     void OnBeat(int beatID)
     {
         //Debug.LogFormat("BeatID{0}", beatID);
-        if (m_sectionsToCueOnBeat.ContainsKey(beatID))
-        {
-            //Debug.LogFormat("In if statement");
-            int index = (int)m_sectionsToCueOnBeat[beatID];
+        //if (m_sectionsToCueOnBeat.ContainsKey(beatID))
+        //{
+        //    //Debug.LogFormat("In if statement");
+        //    int index = (int)m_sectionsToCueOnBeat[beatID];
 
 
-            // - 1 because we are on the beat where this will happen
-            m_cueSignals[index].ReInit(m_cueCountdown - 1, m_sectionsToCueOnBeat[beatID], m_audioManager);
-        }
+        //    // - 1 because we are on the beat where this will happen
+        //    m_cueSignals[index].ReInit(m_cueCountdown - 1, m_sectionsToCueOnBeat[beatID], m_audioManager);
+        //}
+    }
+
+
+    public void AddScore(int points)
+    {
+        m_score += points;
+        Debug.Log(string.Format("Points: {0}",  m_score));
     }
 
     // Responsibilities
@@ -82,4 +89,6 @@ public class GameManager
     int m_cueCountdown = 8;
 
     Metronome m_metronome;
+
+    int m_score;
 }

@@ -6,6 +6,10 @@ public class MouseClicker : MonoBehaviour
 {
     [SerializeField]
     Metronome met;
+
+    [SerializeField]
+    GameManager gm;
+
     // Use this for initialization
     void Start()
     {
@@ -21,18 +25,19 @@ public class MouseClicker : MonoBehaviour
 
             if (timing < -0.09f)
             {
+                gm.AddScore(-3);
                 Debug.Log(string.Format("Closer to next beat {0}", timing));
             }
             else if(timing > 0.09f)
             {
+                gm.AddScore(-3);
                 Debug.Log(string.Format("Closer to previous beat {0}", timing));
             }
             else
             {
+                gm.AddScore(10);
                 Debug.Log(string.Format("On beat{0}", timing));
             }
-
-
         }
     }
 }
