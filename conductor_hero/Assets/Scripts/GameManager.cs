@@ -14,9 +14,9 @@ public class GameManager
         // Need to be readjusted.
         m_sectionsToCueOnBeat = new Dictionary<int, Instrument>
         {
-            { 5, Instrument.glock },
-            { 36, Instrument.harpsichord },
-            { 50, Instrument.violins_extra }
+            //{ 7, Instrument.glock },
+            { 38, Instrument.harpsichord },
+            { 54, Instrument.violins_extra }
         };
 
         m_cueSignals = new List<Cue>
@@ -47,14 +47,12 @@ public class GameManager
 
     void OnBeat(int beatID)
     {
-        Debug.LogFormat("BeatID{0}", beatID);
+        //Debug.LogFormat("BeatID{0}", beatID);
         if (m_sectionsToCueOnBeat.ContainsKey(beatID))
         {
             //Debug.LogFormat("In if statement");
             int index = (int)m_sectionsToCueOnBeat[beatID];
 
-            Renderer r = m_cueSignals[index].GetComponent<Renderer>();
-            r.material.color = new Color(0.5f, 0.5f, 1.0f);
 
             // - 1 because we are on the beat where this will happen
             m_cueSignals[index].ReInit(m_cueCountdown - 1, m_sectionsToCueOnBeat[beatID], m_audioManager);
@@ -81,7 +79,7 @@ public class GameManager
     AudioManager m_audioManager;
 
     [SerializeField] // How many beats before the actual beat do we notify the user?
-    int m_cueCountdown = 4;
+    int m_cueCountdown = 8;
 
     Metronome m_metronome;
 }
