@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Instrument = AudioManager.Instrument;
@@ -53,9 +54,16 @@ public class GameManager
     public void AddScore(int points, int total_points)
     {
         m_score += points;
-        m_total_score += total_points;
+        m_total_user_moves += total_points;
 
-        Debug.Log(string.Format("Points: {0}, Total: {1}",  m_score, m_total_score));       
+
+        double bmpSec = m_metronome.bpm/60;
+
+        float totalScore =m_audioManager.GetSonglength();
+
+        double test = Math.Round(Convert.ToDouble(totalScore) / bmpSec);
+
+        Debug.Log(string.Format("Points: {0}, Total: {1}, totalScore: {2}", m_score, m_total_user_moves, test));
     }
 
     // Responsibilities
@@ -83,5 +91,6 @@ public class GameManager
     Metronome m_metronome;
 
     int m_score;
-    int m_total_score;
+    int m_total_user_moves;
+    int total_score;
 }
