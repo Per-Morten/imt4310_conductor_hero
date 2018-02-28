@@ -26,7 +26,7 @@ public class Metronome
     {
         get { return m_beatID; }
     }
-    
+
     public double OnBeat()
     {
         var userClick = AudioSettings.dspTime;
@@ -52,7 +52,7 @@ public class Metronome
         m_nextBeat = startTick + m_secondsPerBeat;
 
         manager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        manager.PlayMusic(m_nextBeat);
+        //manager.PlayMusic(m_nextBeat);
     }
 
     void LateUpdate()
@@ -79,6 +79,11 @@ public class Metronome
             m_ticked = false;
             m_prevBeat = m_nextBeat;
             m_nextBeat += m_secondsPerBeat;
+
+            if (m_beatID == 7)
+            {
+                manager.PlayMusic(m_nextBeat);
+            }
         }
     }
 }

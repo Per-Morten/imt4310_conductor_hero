@@ -14,28 +14,18 @@ public class GameManager
         // Need to be readjusted.
         m_sectionsToCueOnBeat = new Dictionary<int, Instrument>
         {
-            //{ 7, Instrument.glock },
+            { 6, Instrument.glock },
             { 38, Instrument.harpsichord },
             { 54, Instrument.violins_extra }
         };
-
-        m_cueSignals = new List<Cue>
-        {
-            GameObject.Find("Sphere").GetComponent<Cue>(),
-            GameObject.Find("Sphere (1)").GetComponent<Cue>(),
-            GameObject.Find("Sphere (2)").GetComponent<Cue>(),
-            GameObject.Find("Sphere (3)").GetComponent<Cue>(),
-
-        };
-
 
         m_metronome = GameObject.Find("Metronome").GetComponent<Metronome>();
         m_metronome.onBeatTickedCallback += new Metronome.OnBeatTickCallback(OnBeat);
 
         m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        m_audioManager.MuteInstrument(Instrument.glock, true);
-        m_audioManager.MuteInstrument(Instrument.harpsichord, true);
-        m_audioManager.MuteInstrument(Instrument.violins_extra, true);
+        //m_audioManager.MuteInstrument(Instrument.glock, true);
+        //m_audioManager.MuteInstrument(Instrument.harpsichord, true);
+        //m_audioManager.MuteInstrument(Instrument.violins_extra, true);
 
     }
 
