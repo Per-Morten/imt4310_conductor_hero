@@ -166,8 +166,8 @@ public class Cue
 
         // Should use beatID in addition to countdown
         // But need to wait until that functionality is there
-        //if (m_beatCountdown >= -1 && m_beatCountdown <= 1)
-        if (m_beatCountdown == 0)
+        if (m_beatCountdown >= -1 && m_beatCountdown <= 1)
+        //if (m_beatCountdown == 0)
         {
             Debug.LogFormat("You hit!");
             Renderer r = gameObject.GetComponent<Renderer>();

@@ -25,6 +25,9 @@ public class MotionTracker : MonoBehaviour
 
     private const int NUM_BEATS_PER_MEASURE = 4;
 
+    [SerializeField]
+    GameManager gm;
+
     private const int MAX_INDICES = 3;
     private Transform m_targetTransform;
 
@@ -85,6 +88,7 @@ public class MotionTracker : MonoBehaviour
             {
                 // Give some visual feedback
                 Instantiate(m_particlePrefab, sphere.transform);
+                gm.AddScore(1, 1);
             }
             else
             {
@@ -92,6 +96,7 @@ public class MotionTracker : MonoBehaviour
                 var particleObject = Instantiate(m_particlePrefab, sphere.transform);
                 var mainSystem = particleObject.GetComponent<ParticleSystem>().main;
                 mainSystem.startColor =  new Color(255, 0, 0, 1);
+                gm.AddScore(0, 1);
             }
 
             // This will be reset if we are too late currently. 

@@ -23,15 +23,9 @@ public class GameManager
         m_metronome.onBeatTickedCallback += new Metronome.OnBeatTickCallback(OnBeat);
 
         m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        //m_audioManager.MuteInstrument(Instrument.glock, true);
-        //m_audioManager.MuteInstrument(Instrument.harpsichord, true);
-        //m_audioManager.MuteInstrument(Instrument.violins_extra, true);
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        m_audioManager.MuteInstrument(Instrument.glock, true);
+        m_audioManager.MuteInstrument(Instrument.harpsichord, true);
+        m_audioManager.MuteInstrument(Instrument.violins_extra, true);
 
     }
 
@@ -48,12 +42,13 @@ public class GameManager
         }
     }
 
-    // Responsibilities
-    // - Create the cues when needed 
-    // - Check if the cues are hit
-    //      - Check if they are hit on beat
-    //      - Mute and unmute tracks
-    // - 
+    public void AddScore(int points, int total_points)
+    {
+        m_score += points;
+        m_total_score += total_points;
+
+        Debug.Log(string.Format("Points: {0}, Total: {1}",  m_score, m_total_score));       
+    }
 
     [SerializeField]
     List<Cue> m_cueSignals;
@@ -71,4 +66,7 @@ public class GameManager
     int m_cueCountdown = 8;
 
     Metronome m_metronome;
+
+    int m_score;
+    int m_total_score;
 }
