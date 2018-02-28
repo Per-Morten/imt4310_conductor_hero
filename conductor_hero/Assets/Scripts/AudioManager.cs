@@ -109,8 +109,8 @@ public class AudioManager
         m_sfxSource.PlayScheduled(time);
     }
 
-    public InstrumentTrack GetFirstInstrument() {
-        var firstInstrument = Enum.GetValues(typeof(InstrumentTrack)).Cast<InstrumentTrack>().FirstOrDefault();
+    public Instrument GetFirstInstrument() {
+        var firstInstrument = Enum.GetValues(typeof(Instrument)).Cast<Instrument>().FirstOrDefault();
         return firstInstrument; 
     }
 
