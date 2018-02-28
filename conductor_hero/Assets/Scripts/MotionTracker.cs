@@ -26,7 +26,7 @@ public class MotionTracker : MonoBehaviour
     private const int NUM_BEATS_PER_MEASURE = 4;
 
     [SerializeField]
-    GameManager gm;
+    GameManager gameManager;
 
     private const int MAX_INDICES = 3;
     private Transform m_targetTransform;
@@ -88,7 +88,7 @@ public class MotionTracker : MonoBehaviour
             {
                 // Give some visual feedback
                 Instantiate(m_particlePrefab, sphere.transform);
-                gm.AddScore(10);
+                gameManager.AddScore(1);
             }
             else
             {
@@ -96,7 +96,6 @@ public class MotionTracker : MonoBehaviour
                 var particleObject = Instantiate(m_particlePrefab, sphere.transform);
                 var mainSystem = particleObject.GetComponent<ParticleSystem>().main;
                 mainSystem.startColor =  new Color(255, 0, 0, 1);
-                gm.AddScore(-3);
             }
 
             // This will be reset if we are too late currently. 
@@ -130,6 +129,7 @@ public class MotionTracker : MonoBehaviour
                 sphere.m_meshRenderer.material = sphere.m_defaultMaterial;
             }
         }
+        
 
         // If the index already was updated through OnSphereCollision() we need to go back to its updated value after updating the visuals
         if (m_nextSphereIndexStuct.m_alreadyUpdated)
