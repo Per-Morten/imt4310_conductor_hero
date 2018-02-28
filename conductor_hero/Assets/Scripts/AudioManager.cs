@@ -6,16 +6,16 @@ using System.Linq;
 public class AudioManager
     : MonoBehaviour
 {
-    public enum InstrumentTrack
+    public enum Instrument
     {
-        conductor_hero_orchestral_layer_bass,
-        conductor_hero_orchestral_layer_drums,
-        conductor_hero_orchestral_layer_glock,
-        conductor_hero_orchestral_layer_harpsichord,
-        conductor_hero_orchestral_layer_oboe,
-        conductor_hero_orchestral_layer_violas_lead,
-        conductor_hero_orchestral_layer_violins_extra,
-        conductor_hero_orchestral_layer_violins_lead
+        harpsichord,
+        violins_extra,
+        glock,
+        oboe, // These needs to come first! As they are also used elsewhere
+        bass,
+        drums,
+        violas_lead,
+        violins_lead
     };
 
     public enum SfxTrack
@@ -33,17 +33,18 @@ public class AudioManager
         m_sfxSource.volume = 1.0f;
 
         m_instruments = new List<AudioSource>();
-        foreach (InstrumentTrack value in Enum.GetValues(typeof(InstrumentTrack)))
+        foreach (Instrument value in Enum.GetValues(typeof(Instrument)))
         {
             var source = gameObject.AddComponent<AudioSource>();
             m_instruments.Add(source);
 
-            var val = Resources.Load<AudioClip>("Sounds/" + value.ToString());
+            var val = Resources.Load<AudioClip>("Sounds/conductor_hero_orchestral_layer_" + value.ToString());
             if (!val)
             {
                 Debug.LogWarningFormat("Couldnt find {0} file", value.ToString());
             }
             source.clip = val;
+            //source.mute = true;
         }
 
         m_sfxTracks = new Dictionary<SfxTrack, AudioClip>();
@@ -69,17 +70,17 @@ public class AudioManager
         }
     }
 
-    public void MuteInstrument(InstrumentTrack instrument, bool isMuted)
+    public void MuteInstrument(Instrument instrument, bool isMuted)
     {
         m_instruments[(int)instrument].mute = isMuted;
     }
 
-    public void SetInstrumentVolume(InstrumentTrack instrument, float volume)
+    public void SetInstrumentVolume(Instrument instrument, float volume)
     {
         m_instruments[(int)instrument].volume = volume;
     }
 
-    public float GetInstrumentVolume(InstrumentTrack instrument)
+    public float GetInstrumentVolume(Instrument instrument)
     {
         return m_instruments[(int)instrument].volume;
     }
