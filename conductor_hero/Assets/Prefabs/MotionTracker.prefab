@@ -58,4 +58,5 @@ MonoBehaviour:
   m_metronome: {fileID: 0}
   m_particlePrefab: {fileID: 1529698285485066, guid: 0545a37ec78c9bc47b2f6f8c78362523,
     type: 2}
+  m_onBeatThreshold: 0.1
   m_sphereContainer: {fileID: 0}
