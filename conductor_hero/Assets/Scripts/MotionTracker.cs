@@ -18,6 +18,8 @@ public class MotionTracker : MonoBehaviour
     public Metronome m_metronome;
     public GameObject m_particlePrefab;
 
+    public float m_onBeatThreshold = 0.15f;
+
     public GameObject m_sphereContainer;
     private List<MotionTrackerSphere> m_trackerSpheres;
 
@@ -60,15 +62,31 @@ public class MotionTracker : MonoBehaviour
         // Input Handling
     }
 
+    /// <summary>
+    /// Gets called whenever the controller collides with a sphere.
+    /// Checks whether we are on beat or not and instantiates visual feedback depending on whether this is on/off beat. 
+    /// </summary>
+    /// <param name="sphereIndex">The index of the sphere we have collided with</param>
+    /// <param name="sphere">The actual sphere object we collided with</param>
     public void OnSphereCollision(int sphereIndex, MotionTrackerSphere sphere)
     {
         if(sphereIndex == m_nextSphereIndex)
         {
-            // Quality of being on beat could be decided in GameManager script I guess?
-            // Give some visual feedback for testing purposes. 
-            // Excellent! Good. Miss. or something
             var collisionToBeatDifference = m_metronome.OnBeat();
-            Instantiate(m_particlePrefab, sphere.transform);
+
+            // Are we on beat?
+            if(collisionToBeatDifference <= m_onBeatThreshold && collisionToBeatDifference >= -m_onBeatThreshold)
+            {
+                // Give some visual feedback
+                Instantiate(m_particlePrefab, sphere.transform);
+            }
+            else
+            {
+                // Give some negative visual feedback for missing the beat
+                var particleObject = Instantiate(m_particlePrefab, sphere.transform);
+                var mainSystem = particleObject.GetComponent<ParticleSystem>().main;
+                mainSystem.startColor =  new Color(255, 0, 0, 1);
+            }
 
             // This will be reset if we are too late currently. 
             // Quickfix for being able to hit a bit before beat
