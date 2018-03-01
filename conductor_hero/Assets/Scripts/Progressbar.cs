@@ -17,23 +17,14 @@ public class Progressbar : MonoBehaviour
     private float m_songlength; // = max value
     private int m_min = 0;
     private float time;
-
+    float tick_counter = 0;
 
     // Use this for initialization
     void Start()
     {
         m_fillAmount = 0.0f;
-
         m_songlength = m_audiomanager.GetSonglength();
-        print(m_songlength);
-
-        time = m_audiomanager.GetCurrentPlaybackPosition();
-        print(time);
         m_audiomanager.PlayMusic(0);
-        // 200 - 0* (1 - 0) / 
-
-        //m_songLength = m_songLength / 100; //normalize
-
     }
 
 
@@ -42,20 +33,18 @@ public class Progressbar : MonoBehaviour
     {
         if (m_fillAmount < 1f)
         {
-            float tick = 238 * 0.01f;
-            m_fillAmount += m_fillAmount + tick;
-                
-            //m_fillAmount + 0.1f * Time.deltaTime;  
+            float tick = (m_songlength * 0.01f)/4;
+            
+            time = m_audiomanager.GetCurrentPlaybackPosition();
+            //Debug.Log(string.Format("Time {0}, tick {1}, Fill amount {2}, tick_counter {3}", time, tick, m_fillAmount, tick_counter));
+            if (time >= tick_counter)
+            {
+                m_fillAmount = m_fillAmount + (0.01f)/4;
+                tick_counter += tick;
+            }           
             VisuallyUpdateProgress();
-
-
-
          }
     }
-
-
-
-   
 
     private void VisuallyUpdateProgress()
     {
