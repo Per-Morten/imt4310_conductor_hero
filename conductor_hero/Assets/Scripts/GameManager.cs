@@ -51,11 +51,11 @@ public class GameManager
 
         double bmpSec = m_metronome.bpm/60;
 
-        float totalScore =m_audioManager.GetSonglength();
+        float song_length =m_audioManager.GetSonglength();
 
-        double test = Math.Round(Convert.ToDouble(totalScore) / bmpSec);
+        double total_score = Math.Round(Convert.ToDouble(song_length) / bmpSec);
 
-        Debug.Log(string.Format("Points: {0}, Total: {1}, totalScore: {2}", m_score, m_total_user_moves, test));
+        Debug.Log(string.Format("Points: {0}, Total: {1}, totalScore: {2}", m_score, m_total_user_moves, total_score));
     }
 
     [SerializeField]
