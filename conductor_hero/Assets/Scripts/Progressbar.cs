@@ -23,6 +23,7 @@ public class Progressbar : MonoBehaviour
     void Start()
     {
         m_fillAmount = 0.0f;
+        m_audiomanager = GameObject.Find("audiomanager").GetComponent<AudioManager>();
         m_songlength = m_audiomanager.GetSonglength();
         m_audiomanager.PlayMusic(0);
     }

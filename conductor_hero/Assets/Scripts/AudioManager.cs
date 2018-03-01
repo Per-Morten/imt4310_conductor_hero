@@ -95,7 +95,7 @@ public class AudioManager
 
     public float GetSonglength()
     {
-        return m_instruments[2].clip.length;
+        return m_instruments[5].clip.length;
     }
 
     public float GetCurrentPlaybackPosition()
