@@ -24,32 +24,24 @@ public class GameManager
         m_metronome.onBeatTickedCallback += new Metronome.OnBeatTickCallback(OnBeat);
 
         m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        //m_audioManager.MuteInstrument(Instrument.glock, true);
-        //m_audioManager.MuteInstrument(Instrument.harpsichord, true);
-        //m_audioManager.MuteInstrument(Instrument.violins_extra, true);
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        m_audioManager.MuteInstrument(Instrument.glock, true);
+        m_audioManager.MuteInstrument(Instrument.harpsichord, true);
+        m_audioManager.MuteInstrument(Instrument.violins_extra, true);
 
     }
 
     void OnBeat(int beatID)
     {
-        //Debug.LogFormat("BeatID{0}", beatID);
-        //if (m_sectionsToCueOnBeat.ContainsKey(beatID))
-        //{
-        //    //Debug.LogFormat("In if statement");
-        //    int index = (int)m_sectionsToCueOnBeat[beatID];
-
-
-        //    // - 1 because we are on the beat where this will happen
-        //    m_cueSignals[index].ReInit(m_cueCountdown - 1, m_sectionsToCueOnBeat[beatID], m_audioManager);
-        //}
+        if (m_sectionsToCueOnBeat.ContainsKey(beatID))
+        {
+            int index = (int)m_sectionsToCueOnBeat[beatID];
+            m_cueSignals[index].ReInit(m_cueCountdown, m_sectionsToCueOnBeat[beatID], m_audioManager, m_metronome);
+        }
+        foreach (var cue in m_cueSignals)
+        {
+            cue.OnBeat(beatID);
+        }
     }
-
 
     public void AddScore(int points, int total_points)
     {
@@ -65,13 +57,6 @@ public class GameManager
 
         Debug.Log(string.Format("Points: {0}, Total: {1}, totalScore: {2}", m_score, m_total_user_moves, test));
     }
-
-    // Responsibilities
-    // - Create the cues when needed 
-    // - Check if the cues are hit
-    //      - Check if they are hit on beat
-    //      - Mute and unmute tracks
-    // - 
 
     [SerializeField]
     List<Cue> m_cueSignals;

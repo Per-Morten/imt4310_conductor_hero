@@ -234,7 +234,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 65423284}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -467,15 +467,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4208076640570782, guid: fa9b692c94c08614f918f748bf913cb3, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4208076640570782, guid: fa9b692c94c08614f918f748bf913cb3, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4208076640570782, guid: fa9b692c94c08614f918f748bf913cb3, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4208076640570782, guid: fa9b692c94c08614f918f748bf913cb3, type: 2}
       propertyPath: m_LocalRotation.w
@@ -491,19 +491,23 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114978554508140260, guid: fa9b692c94c08614f918f748bf913cb3,
         type: 2}
-      propertyPath: idlePosition
-      value: 
-      objectReference: {fileID: 1771172115}
-    - target: {fileID: 114978554508140260, guid: fa9b692c94c08614f918f748bf913cb3,
-        type: 2}
       propertyPath: countdownPosition
       value: 
       objectReference: {fileID: 1443627901}
     - target: {fileID: 114978554508140260, guid: fa9b692c94c08614f918f748bf913cb3,
         type: 2}
+      propertyPath: idlePosition
+      value: 
+      objectReference: {fileID: 1771172115}
+    - target: {fileID: 114978554508140260, guid: fa9b692c94c08614f918f748bf913cb3,
+        type: 2}
       propertyPath: successPosition
       value: 
       objectReference: {fileID: 65423285}
+    - target: {fileID: 4208076640570782, guid: fa9b692c94c08614f918f748bf913cb3, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fa9b692c94c08614f918f748bf913cb3, type: 2}
   m_IsPrefabParent: 0
@@ -910,7 +914,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 825657863}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1173,7 +1177,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1176490167}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1824,7 +1828,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2061901656}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

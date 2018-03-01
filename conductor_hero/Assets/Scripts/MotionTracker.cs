@@ -88,6 +88,7 @@ public class MotionTracker : MonoBehaviour
             {
                 // Give some visual feedback
                 Instantiate(m_particlePrefab, sphere.transform);
+
                 gm.AddScore(1, 1);
             }
             else
@@ -96,6 +97,7 @@ public class MotionTracker : MonoBehaviour
                 var particleObject = Instantiate(m_particlePrefab, sphere.transform);
                 var mainSystem = particleObject.GetComponent<ParticleSystem>().main;
                 mainSystem.startColor =  new Color(255, 0, 0, 1);
+
                 gm.AddScore(0, 1);
             }
 
@@ -105,10 +107,6 @@ public class MotionTracker : MonoBehaviour
 
             // We want to avoid cases where the index is reset back a value due to a callback when we were early
             m_nextSphereIndexStuct.m_alreadyUpdated = true;
-
-            // Bug: Red first on early, then green a few frames later
-            // hitting early on 1 means nextSphereIndex gets set to 2 and red is instanitated
-            // MetronomeCallback is called a few frames later and nextSphereIndex is set back to 1, triggering green and setting nextSphereIndex to 2 again 
         }
     }
 
@@ -130,6 +128,7 @@ public class MotionTracker : MonoBehaviour
                 sphere.m_meshRenderer.material = sphere.m_defaultMaterial;
             }
         }
+        
 
         // If the index already was updated through OnSphereCollision() we need to go back to its updated value after updating the visuals
         if (m_nextSphereIndexStuct.m_alreadyUpdated)

@@ -40,34 +40,22 @@ public class Progressbar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (m_fillAmount < 0.98f)
+        if (m_fillAmount < 1f)
         {
-
-            time = m_audiomanager.GetCurrentPlaybackPosition();
-            m_fillAmount = Normalize(time, 0, m_songlength, 0, 1);
-
-
+            float tick = 238 * 0.01f;
+            m_fillAmount += m_fillAmount + tick;
+                
             //m_fillAmount + 0.1f * Time.deltaTime;  
             VisuallyUpdateProgress();
 
 
-            //238 / 100 
 
-            //update variable.. how much to increment time with/bar instead of val * delta.Time
-
-            //time = time - 1f;
-            //print(time);
-            print(m_fillAmount);
-
-            // currenttime = currenttime * songlength   
-            // print(m_fillAmount);
-        }
+         }
     }
 
-    private float Normalize(float value, float inMin, float inMax, float outMin, float outMax)
-    {
-        return (value - inMin) *  (outMin - outMax) / (inMax - inMin) + outMin;
-    }
+
+
+   
 
     private void VisuallyUpdateProgress()
     {
