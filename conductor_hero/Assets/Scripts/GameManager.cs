@@ -16,8 +16,8 @@ public class GameManager
         m_sectionsToCueOnBeat = new Dictionary<int, Instrument>
         {
             { 6, Instrument.glock },
-            { 38, Instrument.harpsichord },
-            { 54, Instrument.violins_extra }
+            { 38, Instrument.glock },
+            { 54, Instrument.violins_extra },
         };
 
         m_metronome = GameObject.Find("Metronome").GetComponent<Metronome>();

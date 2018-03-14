@@ -8,6 +8,7 @@ TagManager:
   - projectile
   - DestroyableObject
   - ConductorBaton
+  - CueHand
   layers:
   - Default
   - TransparentFX
