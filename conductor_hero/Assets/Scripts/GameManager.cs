@@ -77,15 +77,15 @@ public class GameManager
         m_sectionsToCueOnBeat = new Dictionary<int, Instrument>
         {
             // Update to 8 rather than + 2, result of earlier error
-            { 2 + 6, Instrument.glock },
-            { 2 + 38, Instrument.harpsichord },
-            { 2 + 54, Instrument.violins_extra },
-            { 2 + 102, Instrument.violins_extra },
-            { 2 + 166, Instrument.harpsichord },
-            { 2 + 198, Instrument.violins_extra },
-            { 2 + 294, Instrument.glock }, // This should be all instruments, figure out how to do that
-            { 2 + 614, Instrument.harpsichord },
-            { 2 + 742, Instrument.glock }, // This should be all instruments, figure out how to do that
+            { 8, Instrument.glock },
+            { 40, Instrument.harpsichord },
+            { 56, Instrument.violins_extra },
+            { 104, Instrument.violins_extra },
+            { 168, Instrument.harpsichord },
+            { 200, Instrument.violins_extra },
+            { 296, Instrument.glock }, // This should be all instruments, figure out how to do that
+            { 616, Instrument.harpsichord },
+            { 744, Instrument.glock }, // This should be all instruments, figure out how to do that
 
             ////// For testing
             //{ 2 + 8 + 6, Instrument.glock },
@@ -135,7 +135,7 @@ public class GameManager
         if (m_sectionsToCueOnBeat.ContainsKey(beatID))
         {
             int index = (int)m_sectionsToCueOnBeat[beatID];
-            m_cueSignals[index].ReInit(m_cueCountdown, m_sectionsToCueOnBeat[beatID], m_audioManager, m_metronome);
+            m_cueSignals[index].ReInit(m_cueCountdown, this, m_sectionsToCueOnBeat[beatID], m_audioManager, m_metronome);
         }
         foreach (var cue in m_cueSignals)
         {

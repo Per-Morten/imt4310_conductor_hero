@@ -16,12 +16,13 @@ public class Cue
         m_trailRenderer = gameObject.GetComponentInChildren<TrailRenderer>();
     }
 
-    public void ReInit(int countdown, AudioManager.Instrument trackToUnmute, AudioManager audioManager, Metronome metronome)
+    public void ReInit(int countdown, GameManager gameManager, AudioManager.Instrument trackToUnmute, AudioManager audioManager, Metronome metronome)
     {
         m_beatCountdown = countdown;
         m_trackToUnmute = trackToUnmute;
         m_audioManager = audioManager;
         m_metronome = metronome;
+        m_gameManager = gameManager;
 
         Renderer r = gameObject.GetComponent<Renderer>();
         r.material.color = new Color(0.5f, 0.5f, 1.0f);

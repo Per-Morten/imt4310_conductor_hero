@@ -20,3 +20,15 @@ bmp: 175
 | 0:03:51.771        | 680  | volume low                                    |
 | 0:04:13.714        | 744  | cue glock, harpsichord, oboe & volume high    |
 
+# Cues
+| beat | Instrument to cue |
+| ---- | ------------------|
+| 8    | glock             |
+| 40   | harpsichord       |
+| 56   | violins_extra     |
+| 104  | violins_extra     |
+| 168  | harpsichord       |
+| 200  | violins_extra     |
+| 296  | glock             |
+| 616  | harpsichord       |
+| 744  | glock             |
