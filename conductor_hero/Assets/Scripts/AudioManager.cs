@@ -109,9 +109,10 @@ public class AudioManager
         m_sfxSource.PlayScheduled(time);
     }
 
-    public Instrument GetFirstInstrument() {
+    public Instrument GetFirstInstrument()
+    {
         var firstInstrument = Enum.GetValues(typeof(Instrument)).Cast<Instrument>().FirstOrDefault();
-        return firstInstrument; 
+        return firstInstrument;
     }
 
     public bool MuteSfx

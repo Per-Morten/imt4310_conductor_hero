@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Comments
+Move the spheres a bit to the right so they dont completely cover your vision. 
+    Maybe not have them tied to your vision fully
+        Keep them at same y as headset maybe?
+Maybe disable scoring for the concucting when a cue is active as its hard to focus. 
+Possibly make the range a bit more lenient
+Add more cues
+Add in volume 
+ */
 public class MotionTracker : MonoBehaviour
 {
     [Header("Left Controller Components")]
@@ -89,7 +98,7 @@ public class MotionTracker : MonoBehaviour
                 // Give some visual feedback
                 Instantiate(m_particlePrefab, sphere.transform);
 
-                gm.AddScore(1, 1);
+                gm.AddScore(1);
             }
             else
             {
@@ -97,8 +106,6 @@ public class MotionTracker : MonoBehaviour
                 var particleObject = Instantiate(m_particlePrefab, sphere.transform);
                 var mainSystem = particleObject.GetComponent<ParticleSystem>().main;
                 mainSystem.startColor =  new Color(255, 0, 0, 1);
-
-                gm.AddScore(0, 1);
             }
 
             // This will be reset if we are too late currently. 

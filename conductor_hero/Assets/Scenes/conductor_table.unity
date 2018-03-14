@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1325,7 +1325,6 @@ GameObject:
   - component: {fileID: 2032201180}
   - component: {fileID: 2032201184}
   - component: {fileID: 2032201183}
-  - component: {fileID: 2032201182}
   - component: {fileID: 2032201181}
   m_Layer: 5
   m_Name: progBarBG
@@ -1369,18 +1368,6 @@ MonoBehaviour:
   m_audiomanager: {fileID: 1074367142}
   m_fillAmount: 0.4
   m_view: {fileID: 1895103564}
---- !u!114 &2032201182
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114750752430542632, guid: 244337a157ee8c54ea36b7701267b636,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2032201179}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2032201183
 MonoBehaviour:
   m_ObjectHideFlags: 0

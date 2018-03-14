@@ -80,7 +80,9 @@ public class Metronome
             m_prevBeat = m_nextBeat;
             m_nextBeat += m_secondsPerBeat;
 
-            if (m_beatID == 7)
+            // Using 9 instead of 8, as we do LateUpdate at the end of the frame, 
+            // therefore want to kick off the music the frame after.
+            if (m_beatID == 9)
             {
                 manager.PlayMusic(m_nextBeat);
             }

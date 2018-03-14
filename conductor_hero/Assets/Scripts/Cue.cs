@@ -157,6 +157,7 @@ public class Cue
             m_angle += Time.deltaTime * m_rotationSpeed;
         }
 
+        // Loses initial y rotation since we're rotating around (0, 0, 1)
         transform.rotation = Quaternion.AngleAxis(m_angle, Vector3.forward);
     }
 
@@ -176,6 +177,7 @@ public class Cue
 
             m_audioManager.MuteInstrument(m_trackToUnmute, false);
             TransitionToState(State.success);
+            m_gameManager.AddScore(10);
         }
     }
 
@@ -221,4 +223,7 @@ public class Cue
 
     Transform m_prevPos;
     Transform m_nextPos;
+
+    [SerializeField]
+    GameManager m_gameManager;
 }
