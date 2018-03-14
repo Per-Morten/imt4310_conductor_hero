@@ -54,6 +54,12 @@ using Instrument = AudioManager.Instrument;
  *
  * PMS noted how he held the controller at the bottom tip, so he could use it as a batton,
  *      This made it feel like the spheres weren't so far away.
+ *
+ * PMS and Andreas know that the spheres are actually capsule colliders, so we know we don't have to directly
+ *      hit the sphere.
+ *
+ * Field of view etc, you would probably be able to see more if you had greater field of view which you probably have
+ *      in a newer/better headset.
  */
 
 public class GameManager
