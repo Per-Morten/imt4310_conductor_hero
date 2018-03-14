@@ -50,6 +50,10 @@ using Instrument = AudioManager.Instrument;
  * Having the table at the bottom of your peripheral vision would be nice
  *      This is another scaling question
  * 
+ * The controllers are a bit to heavy
+ *
+ * PMS noted how he held the controller at the bottom tip, so he could use it as a batton,
+ *      This made it feel like the spheres weren't so far away.
  */
 
 public class GameManager
