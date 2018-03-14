@@ -6,7 +6,7 @@ using Instrument = AudioManager.Instrument;
 
 public class GameManager
     : MonoBehaviour
-{ 
+{
     void Start()
     {
         // Create cue signal objects
@@ -16,8 +16,14 @@ public class GameManager
         m_sectionsToCueOnBeat = new Dictionary<int, Instrument>
         {
             { 6, Instrument.glock },
-            { 38, Instrument.glock },
+            { 38, Instrument.harpsichord },
             { 54, Instrument.violins_extra },
+            { 102, Instrument.violins_extra },
+            { 166, Instrument.harpsichord },
+            { 198, Instrument.violins_extra },
+            { 294, Instrument.glock }, // This should be all instruments, figure out how to do that
+            { 614, Instrument.harpsichord },
+            { 742, Instrument.glock }, // This should be all instruments, figure out how to do that
         };
 
         m_metronome = GameObject.Find("Metronome").GetComponent<Metronome>();
