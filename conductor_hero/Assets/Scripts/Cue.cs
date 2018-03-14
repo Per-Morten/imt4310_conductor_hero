@@ -84,7 +84,8 @@ public class Cue
 
     public void OnTriggerEnter(Collider other)
     {
-        ReactToHit();
+        if (other.CompareTag("CueHand"))
+            ReactToHit();
     }
 
     private void TransitionToState(State state)
