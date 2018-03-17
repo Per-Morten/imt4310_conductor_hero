@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * When you first allow someone to cue an instrument you have to make sure 
+ * that there are multiple cues for the instrument throughout the song 
+ */
+
 public class Cue
     : MonoBehaviour
 {
@@ -20,6 +25,13 @@ public class Cue
                 GameObject.Find(gameObject.name + "_anim_1").GetComponent<Animation>(),
                 GameObject.Find(gameObject.name + "_anim_2").GetComponent<Animation>(),
             };
+
+            m_bounces = new List<BeatBounce>
+            {
+                GameObject.Find(gameObject.name + "_anim_0").GetComponent<BeatBounce>(),
+                GameObject.Find(gameObject.name + "_anim_1").GetComponent<BeatBounce>(),
+                GameObject.Find(gameObject.name + "_anim_2").GetComponent<BeatBounce>(),
+            };
         }
         else if (gameObject.name != "drums")
         {
@@ -27,6 +39,12 @@ public class Cue
             {
                 GameObject.Find(gameObject.name + "_anim").GetComponent<Animation>(),
             };
+
+            m_bounces = new List<BeatBounce>
+            {
+                GameObject.Find(gameObject.name + "_anim").GetComponent<BeatBounce>(),
+            };
+            
         }
 
         StopAnimation();
@@ -56,6 +74,9 @@ public class Cue
         {
             foreach (var i in m_animations)
                 i.Play();
+
+            foreach (var i in m_bounces)
+                i.StartBouncing();
         }
     }
 
@@ -65,6 +86,10 @@ public class Cue
         {
             foreach (var i in m_animations)
                 i.Stop();
+
+            foreach (var i in m_bounces)
+                i.StopBouncing();
+            
         }
     }
 
@@ -122,14 +147,14 @@ public class Cue
             TransitionToState(State.countdown);
 
         // Hack for testing music
-        if (m_state == State.countdown && m_beatCountdown == 0)
-            TransitionToState(State.success);
+        //if (m_state == State.countdown && m_beatCountdown == 0)
+        //    TransitionToState(State.success);
 
         // Comment back in when finished testing music
-        //if (m_state == State.countdown && m_beatCountdown <= -2)
-        //{
-        //    TransitionToState(State.failed);
-        //}
+        if (m_state == State.countdown && m_beatCountdown <= -2)
+        {
+            TransitionToState(State.failed);
+        }
 
         if (m_state == State.countdown)
         {
@@ -265,6 +290,7 @@ public class Cue
     AudioManager m_audioManager;
     Metronome m_metronome;
     GameManager.CueInfo m_info;
+    List<BeatBounce> m_bounces;
 
     VolumeState m_volumeState;
 

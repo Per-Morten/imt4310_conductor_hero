@@ -58,7 +58,27 @@ MonoBehaviour:
   m_metronome: {fileID: 0}
   m_particlePrefab: {fileID: 1529698285485066, guid: 0545a37ec78c9bc47b2f6f8c78362523,
     type: 2}
-  m_onBeatThreshold: 0.125
+  m_onBeatThreshold: 0.15
   m_sphereContainer: {fileID: 0}
-  m_trailSphereTransform: {fileID: 0}
   gameManager: {fileID: 0}
+  m_cubicBezierPoints: []
+  m_trailRendererSphereTransform: {fileID: 0}
+  m_interpolationSpeed: 5
+  m_interpolationVelocity:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 3.8333328
+      outSlope: 3.8333328
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0.39705902
+      outSlope: 0.39705902
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0

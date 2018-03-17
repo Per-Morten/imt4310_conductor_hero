@@ -142,6 +142,7 @@ public class MotionTracker : MonoBehaviour
                 var particleObject = Instantiate(m_particlePrefab, sphere.transform);
                 var mainSystem = particleObject.GetComponent<ParticleSystem>().main;
                 mainSystem.startColor =  new Color(255, 0, 0, 1);
+                Debug.LogFormat("CollisionToBeatDifference: {0}, BeatThreshold: {1}", collisionToBeatDifference, m_onBeatThreshold);
             }
 
             // This will be reset if we are too late currently. 
