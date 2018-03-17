@@ -12,10 +12,10 @@ public class AudioManager
         violins_extra,
         glock,
         oboe, // These needs to come first! As they are also used elsewhere
-        bass,
-        drums,
+        violins_lead,
         violas_lead,
-        violins_lead
+        drums,
+        bass,
     };
 
     public enum SfxTrack

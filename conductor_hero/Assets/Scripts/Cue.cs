@@ -23,6 +23,7 @@ public class Cue
         m_audioManager = audioManager;
         m_metronome = metronome;
         m_gameManager = gameManager;
+        m_audioManager.MuteInstrument(trackToUnmute, true);
 
         Renderer r = gameObject.GetComponent<Renderer>();
         r.material.color = new Color(0.5f, 0.5f, 1.0f);
@@ -59,17 +60,22 @@ public class Cue
             TransitionToState(State.countdown);
         }
 
-        // Debug fail state
-        if (m_state == State.countdown && m_beatCountdown <= -2)
-        {
-            TransitionToState(State.failed);
-        }
+        if (m_state == State.countdown && m_beatCountdown == 0)
+            // Hack for testing music
+            TransitionToState(State.success);
+
+
+        // Comment back in when finished testing music
+        //if (m_state == State.countdown && m_beatCountdown <= -2)
+        //{
+        //    TransitionToState(State.failed);
+        //}
 
         // Muting instrument to ensure that the track is not playing from before
-        if (m_beatCountdown == 2)
-        {
-            m_audioManager.MuteInstrument(m_trackToUnmute, true);
-        }
+        //if (m_beatCountdown == 0 && (m_state == State.countdown || m_state == State.failed))
+        //{
+        //    m_audioManager.MuteInstrument(m_trackToUnmute, true);
+        //}
 
         if (m_state == State.countdown)
         {
@@ -113,6 +119,7 @@ public class Cue
         }
         if (state == State.success)
         {
+            m_audioManager.MuteInstrument(m_trackToUnmute, false);
             m_startTime = (float)AudioSettings.dspTime;
             m_length = Vector3.Distance(countdownPosition.position, successPosition.position);
             m_speed = m_length * 4.0f;
@@ -176,7 +183,6 @@ public class Cue
             Renderer r = gameObject.GetComponent<Renderer>();
             r.material.color = new Color(0.0f, 1.0f, 0.0f);
 
-            m_audioManager.MuteInstrument(m_trackToUnmute, false);
             TransitionToState(State.success);
             m_gameManager.AddScore(10);
         }

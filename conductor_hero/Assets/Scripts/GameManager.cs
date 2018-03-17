@@ -84,8 +84,15 @@ public class GameManager
             { 168, Instrument.harpsichord },
             { 200, Instrument.violins_extra },
             { 296, Instrument.glock }, // This should be all instruments, figure out how to do that
+            
             { 616, Instrument.harpsichord },
             { 744, Instrument.glock }, // This should be all instruments, figure out how to do that
+
+            // Extra added
+            { 80, Instrument.violins_lead }, // Violas lead
+            { 296 + (8 * 4), Instrument.harpsichord },
+            //
+
 
             ////// For testing
             //{ 2 + 8 + 6, Instrument.glock },
@@ -121,7 +128,7 @@ public class GameManager
         m_audioManager.MuteInstrument(Instrument.glock, true);
         m_audioManager.MuteInstrument(Instrument.harpsichord, true);
         m_audioManager.MuteInstrument(Instrument.violins_extra, true);
-        m_audioManager.MuteInstrument(Instrument.oboe, true);
+        //m_audioManager.MuteInstrument(Instrument.oboe, true);
 
 
         float bmpSec = (float)m_metronome.bpm / 60.0f;
