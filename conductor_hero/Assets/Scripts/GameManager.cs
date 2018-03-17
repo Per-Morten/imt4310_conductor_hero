@@ -73,7 +73,7 @@ public class GameManager
         m_cueInfos = new List<CueInfo>
         {
             new CueInfo(trackStart: 16, logicStart: 8, muteStart: 14, instrument: Instrument.glock),
-            new CueInfo(trackStart: 48, logicStart: 8, muteStart: 32, instrument: Instrument.harpsichord),
+            new CueInfo(trackStart: 48, logicStart: 8, muteStart: 46, instrument: Instrument.harpsichord),
             new CueInfo(trackStart: 64, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra),
             new CueInfo(trackStart: 112, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra),
             new CueInfo(trackStart: 176, logicStart: 8, muteStart: 8, instrument: Instrument.harpsichord),
@@ -83,7 +83,7 @@ public class GameManager
             new CueInfo(trackStart: 752, logicStart: 8, muteStart: 8, instrument: Instrument.glock),
 
             // Extra added tracks
-            new CueInfo(trackStart: 48, logicStart: 8, muteStart: 32, instrument: Instrument.oboe),
+            new CueInfo(trackStart: 48, logicStart: 8, muteStart: 46, instrument: Instrument.oboe),
             new CueInfo(trackStart: 96, logicStart: 8, muteStart: 17, instrument: Instrument.violins_lead), // Violins lead
 
 
@@ -113,6 +113,9 @@ public class GameManager
         float songLength = m_audioManager.GetSonglength();
 
         m_maxScore = (int)(songLength * bmpSec) + m_cueInfos.Count * 10;
+
+        //foreach (var i in m_cueSignals)
+        //    i.StopAnimation();
     }
 
     void OnBeat(int beatID)
@@ -128,6 +131,15 @@ public class GameManager
         foreach (var cue in m_cueSignals)
         {
             cue.OnBeat(beatID);
+        }
+
+        // Hack for getting instruments to start playing on correct beat.
+        if (beatID == 16)
+        {
+            m_cueSignals[(int)Instrument.violas_lead].StartAnimation();
+            m_cueSignals[(int)Instrument.violins_lead].StartAnimation();
+            m_cueSignals[(int)Instrument.bass].StartAnimation();
+
         }
     }
 

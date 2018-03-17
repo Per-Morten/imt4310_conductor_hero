@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class Cue
     : MonoBehaviour
 {
@@ -11,6 +10,26 @@ public class Cue
     {
         m_text = gameObject.GetComponentInChildren<Text>();
         m_trailRenderer = gameObject.GetComponentInChildren<TrailRenderer>();
+        successPosition = GameObject.Find(gameObject.name + "_pos").GetComponent<Transform>();
+
+        if (gameObject.name == "oboe")
+        {
+            m_animations = new List<Animation>
+            {
+                GameObject.Find(gameObject.name + "_anim_0").GetComponent<Animation>(),
+                GameObject.Find(gameObject.name + "_anim_1").GetComponent<Animation>(),
+                GameObject.Find(gameObject.name + "_anim_2").GetComponent<Animation>(),
+            };
+        }
+        else if (gameObject.name != "drums")
+        {
+            m_animations = new List<Animation>
+            {
+                GameObject.Find(gameObject.name + "_anim").GetComponent<Animation>(),
+            };
+        }
+
+        StopAnimation();
     }
 
     public void ReInit(GameManager gm, AudioManager am, Metronome met, GameManager.CueInfo info)
@@ -28,6 +47,25 @@ public class Cue
 
 
         Debug.LogFormat("Countdown: {0}", m_beatCountdown);
+
+    }
+
+    public void StartAnimation()
+    {
+        if (gameObject.name != "drums")
+        {
+            foreach (var i in m_animations)
+                i.Play();
+        }
+    }
+
+    public void StopAnimation()
+    {
+        if (gameObject.name != "drums")
+        {
+            foreach (var i in m_animations)
+                i.Stop();
+        }
     }
 
     void Update()
@@ -72,7 +110,10 @@ public class Cue
     {
         m_beatCountdown--;
         if (m_beatCountdown == m_info.beatToMute)
+        {
             m_volumeState = VolumeState.mute;
+            StopAnimation();
+        }
 
         if (m_beatCountdown == m_info.startCueLogic)
             TransitionToState(State.rising);
@@ -81,14 +122,14 @@ public class Cue
             TransitionToState(State.countdown);
 
         // Hack for testing music
-        //if (m_state == State.countdown && m_beatCountdown == 0)
-        //    TransitionToState(State.success);
+        if (m_state == State.countdown && m_beatCountdown == 0)
+            TransitionToState(State.success);
 
         // Comment back in when finished testing music
-        if (m_state == State.countdown && m_beatCountdown <= -2)
-        {
-            TransitionToState(State.failed);
-        }
+        //if (m_state == State.countdown && m_beatCountdown <= -2)
+        //{
+        //    TransitionToState(State.failed);
+        //}
 
         if (m_state == State.countdown)
         {
@@ -138,6 +179,9 @@ public class Cue
             m_length = Vector3.Distance(countdownPosition.position, successPosition.position);
             m_speed = m_length * 4.0f;
             gameObject.transform.position = countdownPosition.position;
+
+            StartAnimation();
+
         }
         if (state == State.failed)
         {
@@ -256,4 +300,6 @@ public class Cue
 
     [SerializeField]
     GameManager m_gameManager;
+
+    List<Animation> m_animations;
 }

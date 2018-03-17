@@ -8,14 +8,15 @@ public class AudioManager
 {
     public enum Instrument
     {
+        // DO NOT REORDER!!!!!!
         harpsichord,
-        violins_extra,
         glock,
-        oboe, // These needs to come first! As they are also used elsewhere
+        oboe, 
+        violins_extra,
         violins_lead,
         violas_lead,
-        drums,
         bass,
+        drums,
     };
 
     public enum SfxTrack
