@@ -70,80 +70,61 @@ public class GameManager
 
     void Start()
     {
-        // Create cue signal objects
-        // Setup which beats we need to push on
-        // These times are based on a temporary hack of starting the song 1 bar later, for testing
-        // Need to be readjusted.
-        m_sectionsToCueOnBeat = new Dictionary<int, Instrument>
+        m_cueInfos = new List<CueInfo>
         {
-            // Update to 8 rather than + 2, result of earlier error
-            { 8, Instrument.glock },
-            { 40, Instrument.harpsichord },
-            { 56, Instrument.violins_extra },
-            { 104, Instrument.violins_extra },
-            { 168, Instrument.harpsichord },
-            { 200, Instrument.violins_extra },
-            { 296, Instrument.glock }, // This should be all instruments, figure out how to do that
-            
-            { 616, Instrument.harpsichord },
-            { 744, Instrument.glock }, // This should be all instruments, figure out how to do that
+            new CueInfo(trackStart: 16, logicStart: 8, muteStart: 14, instrument: Instrument.glock),
+            new CueInfo(trackStart: 48, logicStart: 8, muteStart: 32, instrument: Instrument.harpsichord),
+            new CueInfo(trackStart: 64, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra),
+            new CueInfo(trackStart: 112, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra),
+            new CueInfo(trackStart: 176, logicStart: 8, muteStart: 8, instrument: Instrument.harpsichord),
+            new CueInfo(trackStart: 208, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra),
+            new CueInfo(trackStart: 304, logicStart: 8, muteStart: 8, instrument: Instrument.glock),
+            new CueInfo(trackStart: 624, logicStart: 8, muteStart: 8, instrument: Instrument.harpsichord),
+            new CueInfo(trackStart: 752, logicStart: 8, muteStart: 8, instrument: Instrument.glock),
 
-            // Extra added
-            { 80, Instrument.violins_lead }, // Violas lead
-            { 296 + (8 * 4), Instrument.harpsichord },
-            //
+            // Extra added tracks
+            new CueInfo(trackStart: 48, logicStart: 8, muteStart: 32, instrument: Instrument.oboe),
+            new CueInfo(trackStart: 96, logicStart: 8, muteStart: 17, instrument: Instrument.violins_lead), // Violins lead
 
 
-            ////// For testing
-            //{ 2 + 8 + 6, Instrument.glock },
-            //{ 2 + 8 + 54, Instrument.violins_extra },
-            //{ 2 + 8 + 102, Instrument.violins_extra },
-            //{ 2 + 8 + 166, Instrument.harpsichord },
-            //{ 2 + 8 + 198, Instrument.violins_extra },
-            //{ 2 + 8 + 294, Instrument.glock }, // This should be all instruments, figure out how to do that
-            //{ 2 + 8 + 614, Instrument.harpsichord },
-            //{ 2 + 8 + 742, Instrument.glock }, // This should be all instruments, figure out how to do 
-
-            //// For testing
-            //{ 2 + 8 + 8 + 6, Instrument.glock },
-            //{ 2 + 8 + 8 + 54, Instrument.violins_extra },
-            //{ 2 + 8 + 8 + 102, Instrument.violins_extra },
-            //{ 2 + 8 + 8 + 166, Instrument.harpsichord },
-            //{ 2 + 8 + 8 + 198, Instrument.violins_extra },
-            //{ 2 + 8 + 8 + 294, Instrument.glock }, // This should be all instruments, figure out how to do that
-            //{ 2 + 8 + 8 + 614, Instrument.harpsichord },
-            //{ 2 + 8 + 8 + 742, Instrument.glock }, // This should be all instruments, figure out how to do
 
         };
 
-
-        //float song_length = m_audioManager.GetSonglength();
-        //double total_score = Math.Round(Convert.ToDouble(song_length) * bmpSec);
-  
+        m_cueInfos.Sort((lhs, rhs) => 
+        {
+            if (lhs.initBeat == rhs.initBeat)
+                return 0;
+            if (lhs.initBeat < rhs.initBeat)
+                return -1;
+            return 1;
+        });
 
         m_metronome = GameObject.Find("Metronome").GetComponent<Metronome>();
         m_metronome.onBeatTickedCallback += new Metronome.OnBeatTickCallback(OnBeat);
 
         m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        m_audioManager.MuteInstrument(Instrument.glock, true);
-        m_audioManager.MuteInstrument(Instrument.harpsichord, true);
-        m_audioManager.MuteInstrument(Instrument.violins_extra, true);
-        //m_audioManager.MuteInstrument(Instrument.oboe, true);
-
-
+        
+        m_audioManager.SetInstrumentVolume(Instrument.harpsichord, 0.0f);
+        m_audioManager.SetInstrumentVolume(Instrument.glock, 0.0f);
+        m_audioManager.SetInstrumentVolume(Instrument.violins_extra, 0.0f);
+        m_audioManager.SetInstrumentVolume(Instrument.oboe, 0.0f);
+        
         float bmpSec = (float)m_metronome.bpm / 60.0f;
         float songLength = m_audioManager.GetSonglength();
 
-        m_maxScore = (int)(songLength * bmpSec) + m_sectionsToCueOnBeat.Count * 10;
+        m_maxScore = (int)(songLength * bmpSec) + m_cueInfos.Count * 10;
     }
 
     void OnBeat(int beatID)
     {
-        if (m_sectionsToCueOnBeat.ContainsKey(beatID))
+        while (m_cueInfos.Count > 0 && m_cueInfos[0].initBeat == beatID)
         {
-            int index = (int)m_sectionsToCueOnBeat[beatID];
-            m_cueSignals[index].ReInit(m_cueCountdown, this, m_sectionsToCueOnBeat[beatID], m_audioManager, m_metronome);
+            CueInfo info = m_cueInfos[0];
+            m_cueInfos.RemoveAt(0);
+            m_cueSignals[(int)info.instrument].ReInit(this, m_audioManager, m_metronome, info);
         }
+
+
         foreach (var cue in m_cueSignals)
         {
             cue.OnBeat(beatID);
@@ -167,8 +148,29 @@ public class GameManager
     // Holds when they should start to be queued in
     // In this case, 2 bars (i.e. 8 beats) before they are activated
 
-    [SerializeField]
-    Dictionary<int, Instrument> m_sectionsToCueOnBeat;
+    public struct CueInfo
+    {
+        public CueInfo(int trackStart, int logicStart, int muteStart, Instrument instrument)
+        {
+            initBeat = trackStart - Math.Max(logicStart, muteStart);
+            countdown = trackStart - initBeat;
+            startCueLogic = logicStart - 1;
+            beatToMute = muteStart - 1;
+            this.instrument = instrument;
+        }
+
+        // At what beat does the instrument actually enter?
+        // How many beats before do we initiate the logic?
+        // How many beats before do we mute the track?
+
+        public int initBeat; // At which beat do we init the cue?
+        public int countdown; // How many beats countdown is there?
+        public int startCueLogic; // At which beat do we start the cue logic?
+        public int beatToMute; // At which beat do we mute the instrument?
+        public Instrument instrument; // Which instrument are we talking about?
+    };
+    
+    List<CueInfo> m_cueInfos;
 
     [SerializeField]
     AudioManager m_audioManager;
