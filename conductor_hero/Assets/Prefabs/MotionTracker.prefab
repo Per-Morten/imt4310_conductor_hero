@@ -60,4 +60,5 @@ MonoBehaviour:
     type: 2}
   m_onBeatThreshold: 0.125
   m_sphereContainer: {fileID: 0}
-  gm: {fileID: 0}
+  m_trailSphereTransform: {fileID: 0}
+  gameManager: {fileID: 0}

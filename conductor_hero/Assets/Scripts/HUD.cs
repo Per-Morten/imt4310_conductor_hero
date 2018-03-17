@@ -33,6 +33,5 @@ public class HUD : MonoBehaviour
     private void UpdateView()
     {
         m_view.fillAmount = m_fillAmount;
-        Debug.Log(string.Format("volume: {0}", volume));
     }
 }
