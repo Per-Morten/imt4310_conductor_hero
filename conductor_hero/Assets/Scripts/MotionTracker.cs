@@ -2,15 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/* Comments
-Move the spheres a bit to the right so they dont completely cover your vision. 
-    Maybe not have them tied to your vision fully
-        Keep them at same y as headset maybe?
-Maybe disable scoring for the concucting when a cue is active as its hard to focus. 
-Possibly make the range a bit more lenient
-Add more cues
-Add in volume 
- */
 public class MotionTracker : MonoBehaviour
 {
     [Header("Left Controller Components")]
@@ -27,15 +18,16 @@ public class MotionTracker : MonoBehaviour
     public Metronome m_metronome;
     public GameObject m_particlePrefab;
 
-    public float m_onBeatThreshold = 0.15f;
+    [SerializeField]
+    private float m_onBeatThreshold = 0.15f;
 
     public GameObject m_sphereContainer;
     private List<MotionTrackerSphere> m_trackerSpheres;
 
-    private const int NUM_BEATS_PER_MEASURE = 4;
-
     [SerializeField]
-    GameManager gm;
+    private GameManager gameManager;
+
+    private const int NUM_BEATS_PER_MEASURE = 4;
 
     private const int MAX_INDICES = 3;
     private Transform m_targetTransform;
@@ -62,10 +54,50 @@ public class MotionTracker : MonoBehaviour
                 }
             }
         }
+
+        // To separate our game logic from visual logic
+        public int nextVisualSphereIndex
+        {
+            get
+            {
+                return m_nextVisualSphereIndex;
+            }
+            set
+            {
+                // Wraps around for simplicity
+                if (value > NUM_BEATS_PER_MEASURE - 1)
+                {
+                    m_nextVisualSphereIndex = 0;
+                }
+                else
+                {
+                    m_nextVisualSphereIndex = value;
+                }
+            }
+        }
         private int m_nextSphereIndex;
+        private int m_nextVisualSphereIndex;
     }
 
-    private NextSphereIndex m_nextSphereIndexStuct;
+    private NextSphereIndex m_nextSphereIndexStruct;
+
+    [Header("Interpolation Related")]
+    [SerializeField]
+    private List<Transform> m_cubicBezierPoints = new List<Transform>();
+
+    [SerializeField]
+    private Transform m_trailRendererSphereTransform;
+
+    [SerializeField]
+    private float m_interpolationSpeed = 5;
+
+    [SerializeField]
+    private AnimationCurve m_interpolationVelocity;
+
+    private Vector3 m_interpolationStartPos;
+    private Vector3 m_interpolationEndPos;
+    private float m_interpolationTimer = 0;
+
 
     private void Start()
     {
@@ -77,7 +109,11 @@ public class MotionTracker : MonoBehaviour
 
     private void Update()
     {
-        // Input Handling
+        if (m_interpolationTimer <= 1)
+        {
+            m_interpolationTimer += Time.deltaTime * m_interpolationSpeed;
+            m_trailRendererSphereTransform.position = Vector3.Lerp(m_interpolationStartPos, m_interpolationEndPos, m_interpolationVelocity.Evaluate(m_interpolationTimer));
+        }
     }
 
     /// <summary>
@@ -88,7 +124,7 @@ public class MotionTracker : MonoBehaviour
     /// <param name="sphere">The actual sphere object we collided with</param>
     public void OnSphereCollision(int sphereIndex, MotionTrackerSphere sphere)
     {
-        if(sphereIndex == m_nextSphereIndexStuct.nextSphereIndex)
+        if(sphereIndex == m_nextSphereIndexStruct.nextSphereIndex)
         {
             var collisionToBeatDifference = m_metronome.OnBeat();
 
@@ -98,7 +134,7 @@ public class MotionTracker : MonoBehaviour
                 // Give some visual feedback
                 Instantiate(m_particlePrefab, sphere.transform);
 
-                gm.AddScore(1);
+                gameManager.AddScore(1);
             }
             else
             {
@@ -110,39 +146,66 @@ public class MotionTracker : MonoBehaviour
 
             // This will be reset if we are too late currently. 
             // Quickfix for being able to hit a bit before beat
-            m_nextSphereIndexStuct.nextSphereIndex = sphereIndex + 1;
+            m_nextSphereIndexStruct.nextSphereIndex = sphereIndex + 1;
 
             // We want to avoid cases where the index is reset back a value due to a callback when we were early
-            m_nextSphereIndexStuct.m_alreadyUpdated = true;
+            m_nextSphereIndexStruct.m_alreadyUpdated = true;
         }
     }
 
     // Gets called on every metronome beat. 
     public void MetronomeCallback(int beatID)
     {
-        var oldIndex = m_nextSphereIndexStuct.nextSphereIndex;
-        m_nextSphereIndexStuct.nextSphereIndex = (beatID % NUM_BEATS_PER_MEASURE) + 1;
+        var oldIndex = m_nextSphereIndexStruct.nextSphereIndex;
+        var oldVisualIndex = m_nextSphereIndexStruct.nextVisualSphereIndex;
+        m_nextSphereIndexStruct.nextSphereIndex = (beatID % NUM_BEATS_PER_MEASURE) + 1;
+        m_nextSphereIndexStruct.nextVisualSphereIndex = (beatID % NUM_BEATS_PER_MEASURE) + 1;
 
         // Update visuals
         foreach (var sphere in m_trackerSpheres)
         {
-            if (sphere.m_SphereIndex == m_nextSphereIndexStuct.nextSphereIndex)
+            if (sphere.m_SphereIndex == m_nextSphereIndexStruct.nextVisualSphereIndex)
             {
                 sphere.m_meshRenderer.material = sphere.m_nextInOrderMaterial;
+
+                // Interpolation related
+                var oldSphere = GetSphereAtIndex(oldVisualIndex);
+                m_trailRendererSphereTransform.position = oldSphere.transform.position;
+                UpdateInterpolationTargets(oldSphere.transform.position, GetSphereAtIndex(m_nextSphereIndexStruct.nextVisualSphereIndex).transform.position);
+                sphere.GetComponentInChildren<ParticleSystem>().Play();
+                
             }
             else
             {
                 sphere.m_meshRenderer.material = sphere.m_defaultMaterial;
             }
         }
-        
 
         // If the index already was updated through OnSphereCollision() we need to go back to its updated value after updating the visuals
-        if (m_nextSphereIndexStuct.m_alreadyUpdated)
+        if (m_nextSphereIndexStruct.m_alreadyUpdated)
         {
-            m_nextSphereIndexStuct.nextSphereIndex = oldIndex;
-            m_nextSphereIndexStuct.m_alreadyUpdated = false;
+            m_nextSphereIndexStruct.nextSphereIndex = oldIndex;
+            m_nextSphereIndexStruct.m_alreadyUpdated = false;
         }
+    }
+
+    private void UpdateInterpolationTargets(Vector3 start, Vector3 end)
+    {
+        m_interpolationStartPos = start;
+        m_interpolationEndPos = end;
+        m_interpolationTimer = 0;
+    }
+
+    private MotionTrackerSphere GetSphereAtIndex(int sphereIndex)
+    {
+        foreach(var sphere in m_trackerSpheres)
+        {
+            if(sphere.m_SphereIndex == sphereIndex)
+            {
+                return sphere;
+            }
+        }
+        return null;
     }
 
     #region PointedObjectCallbacks
