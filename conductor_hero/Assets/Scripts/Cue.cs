@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Feedback from test:
-// - Maybe going a bit to fast
-// - 
 
 public class Cue
     : MonoBehaviour
@@ -16,26 +13,45 @@ public class Cue
         m_trailRenderer = gameObject.GetComponentInChildren<TrailRenderer>();
     }
 
-    public void ReInit(int countdown, GameManager gameManager, AudioManager.Instrument trackToUnmute, AudioManager audioManager, Metronome metronome)
+    public void ReInit(GameManager gm, AudioManager am, Metronome met, GameManager.CueInfo info)
     {
-        m_beatCountdown = countdown;
-        m_trackToUnmute = trackToUnmute;
-        m_audioManager = audioManager;
-        m_metronome = metronome;
-        m_gameManager = gameManager;
-        m_audioManager.MuteInstrument(trackToUnmute, true);
+        m_gameManager = gm;
+        m_audioManager = am;
+        m_metronome = met;
+        m_beatCountdown = info.countdown;
+        m_info = info;
+
+        m_volumeState = VolumeState.none;
 
         Renderer r = gameObject.GetComponent<Renderer>();
         r.material.color = new Color(0.5f, 0.5f, 1.0f);
 
-        TransitionToState(State.rising);
 
-        Debug.LogFormat("Got {0} beats", m_beatCountdown);
-        m_text.text = "";
+        Debug.LogFormat("Countdown: {0}", m_beatCountdown);
     }
 
     void Update()
     {
+        // Goldylocks number. want to increase sound 0.15 for each millisecond (ish)
+        float volumeChange = 0.15f * Time.deltaTime * 100.0f;
+        if (m_volumeState == VolumeState.mute)
+        {
+            float currVolume = m_audioManager.GetInstrumentVolume(m_info.instrument);
+            currVolume -= volumeChange;
+            m_audioManager.SetInstrumentVolume(m_info.instrument, currVolume);
+            if (currVolume <= 0.0f)
+                m_volumeState = VolumeState.none;
+        }
+
+        if (m_volumeState == VolumeState.unmute)
+        {
+            float currVolume = m_audioManager.GetInstrumentVolume(m_info.instrument);
+            currVolume += volumeChange;
+            m_audioManager.SetInstrumentVolume(m_info.instrument, currVolume);
+            if (currVolume >= 1.0f)
+                m_volumeState = VolumeState.none;
+        }
+
         if (m_state == State.idle)
             return;
 
@@ -55,27 +71,24 @@ public class Cue
     public void OnBeat(int beatID)
     {
         m_beatCountdown--;
+        if (m_beatCountdown == m_info.beatToMute)
+            m_volumeState = VolumeState.mute;
+
+        if (m_beatCountdown == m_info.startCueLogic)
+            TransitionToState(State.rising);
+
         if (m_beatCountdown == 4)
-        {
             TransitionToState(State.countdown);
-        }
 
-        if (m_state == State.countdown && m_beatCountdown == 0)
-            // Hack for testing music
-            TransitionToState(State.success);
-
+        // Hack for testing music
+        //if (m_state == State.countdown && m_beatCountdown == 0)
+        //    TransitionToState(State.success);
 
         // Comment back in when finished testing music
-        //if (m_state == State.countdown && m_beatCountdown <= -2)
-        //{
-        //    TransitionToState(State.failed);
-        //}
-
-        // Muting instrument to ensure that the track is not playing from before
-        //if (m_beatCountdown == 0 && (m_state == State.countdown || m_state == State.failed))
-        //{
-        //    m_audioManager.MuteInstrument(m_trackToUnmute, true);
-        //}
+        if (m_state == State.countdown && m_beatCountdown <= -2)
+        {
+            TransitionToState(State.failed);
+        }
 
         if (m_state == State.countdown)
         {
@@ -119,7 +132,8 @@ public class Cue
         }
         if (state == State.success)
         {
-            m_audioManager.MuteInstrument(m_trackToUnmute, false);
+            //m_audioManager.MuteInstrument(m_trackToUnmute, false);
+            m_volumeState = VolumeState.unmute;
             m_startTime = (float)AudioSettings.dspTime;
             m_length = Vector3.Distance(countdownPosition.position, successPosition.position);
             m_speed = m_length * 4.0f;
@@ -197,9 +211,18 @@ public class Cue
         failed, // Fall limp to the ground
     };
 
+    enum VolumeState
+    {
+        none,
+        unmute,
+        mute,
+    };
+
     AudioManager m_audioManager;
-    AudioManager.Instrument m_trackToUnmute;
     Metronome m_metronome;
+    GameManager.CueInfo m_info;
+
+    VolumeState m_volumeState;
 
     int m_beatCountdown;
     State m_state;
