@@ -8,48 +8,48 @@ using Instrument = AudioManager.Instrument;
 /*
  * Playtesting notes
  * our song of choice seems a bit too hard for those with limited music experience (obviously)
- * In general though, if you are into it, it seems to work pretty well. 
- * 
+ * In general though, if you are into it, it seems to work pretty well.
+ *
  * Other comments on improvements:
  * Lines interpolating between the spheres to show your movement pattern.
- *      Small pulsating circles from where the spheres are on beat once they are invisible. 
+ *      Small pulsating circles from where the spheres are on beat once they are invisible.
  *      So you know where the beat is without having the spheres.
- *      A better visual indicator for what the first beat of a measure is. 
- *          Bigger explosion on the first beat for example. 
- * 
- * +1/+10 popups on the score whenever score is added. 
- * 
+ *      A better visual indicator for what the first beat of a measure is.
+ *          Bigger explosion on the first beat for example.
+ *
+ * +1/+10 popups on the score whenever score is added.
+ *
  * Maybe have the progress bar pulse as well (we'll see)
- * 
+ *
  * We're counting points for before the song starts, we want to fix that
- *      Count points on the first cue and onwards. 
- * 
+ *      Count points on the first cue and onwards.
+ *
  * Improve visuals on the ring around cues
- * 
+ *
  * When was it most boring?
  *      When there are the least cue's
  *      (The song is also probably too long, but thats not a relevant thing to change,
  *      but smaller play sessions would probably increase engagement when your interaction
  *      with the world is fairly static)
- * 
+ *
  * We need to calibrate the height of the spheres related to the headset height
- *      Different heights gives different arm lengths as well. 
+ *      Different heights gives different arm lengths as well.
  *      So we might want to scale the distance away from cue's depending on height as well
- *      NOTE: Seems to have improved when the player actually stands on the sweet spot which is where the 
- *      feet are supposed to be on the level. 
- * 
+ *      NOTE: Seems to have improved when the player actually stands on the sweet spot which is where the
+ *      feet are supposed to be on the level.
+ *
  * A better visual indicator for when the song starts would be nice
- *      Having the player start the song instead. 
+ *      Having the player start the song instead.
  *      Song starts when player hits first cue for example.
- *      We need to give start/stop points for giving out score. 
- * 
+ *      We need to give start/stop points for giving out score.
+ *
  * Most people seem to be too focused on the bubbles
  *      They dont seem to notice the environment as a result
- *      Letting players start when they want could give them the time to look around. 
- * 
+ *      Letting players start when they want could give them the time to look around.
+ *
  * Having the table at the bottom of your peripheral vision would be nice
  *      This is another scaling question
- * 
+ *
  * The controllers are a bit to heavy
  *
  * PMS noted how he held the controller at the bottom tip, so he could use it as a batton,
@@ -72,25 +72,43 @@ public class GameManager
     {
         m_cueInfos = new List<CueInfo>
         {
-            new CueInfo(trackStart: 16, logicStart: 8, muteStart: 14, instrument: Instrument.glock),
-            new CueInfo(trackStart: 48, logicStart: 8, muteStart: 46, instrument: Instrument.harpsichord),
-            new CueInfo(trackStart: 64, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra),
-            new CueInfo(trackStart: 112, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra),
-            new CueInfo(trackStart: 176, logicStart: 8, muteStart: 8, instrument: Instrument.harpsichord),
-            new CueInfo(trackStart: 208, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra),
-            new CueInfo(trackStart: 304, logicStart: 8, muteStart: 8, instrument: Instrument.glock),
-            new CueInfo(trackStart: 624, logicStart: 8, muteStart: 8, instrument: Instrument.harpsichord),
-            new CueInfo(trackStart: 752, logicStart: 8, muteStart: 8, instrument: Instrument.glock),
+            // new CueInfo(trackStart: 16, logicStart: 8, muteStart: 14, instrument: Instrument.glock, trackLength: 64),
+            // new CueInfo(trackStart: 48, logicStart: 8, muteStart: 46, instrument: Instrument.harpsichord, trackLength: 32),
+            // new CueInfo(trackStart: 64, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra, trackLength: 20),
+            // new CueInfo(trackStart: 112, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra, trackLength: 4),
+            // new CueInfo(trackStart: 176, logicStart: 8, muteStart: 8, instrument: Instrument.harpsichord, trackLength: 4),
+            // new CueInfo(trackStart: 208, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra, trackLength: 4),
+            // new CueInfo(trackStart: 304, logicStart: 8, muteStart: 8, instrument: Instrument.glock, trackLength: 4),
+            // new CueInfo(trackStart: 624, logicStart: 8, muteStart: 8, instrument: Instrument.harpsichord, trackLength: 4),
+            // new CueInfo(trackStart: 752, logicStart: 8, muteStart: 8, instrument: Instrument.glock, trackLength: 4),
 
-            // Extra added tracks
-            new CueInfo(trackStart: 48, logicStart: 8, muteStart: 46, instrument: Instrument.oboe),
-            new CueInfo(trackStart: 96, logicStart: 8, muteStart: 17, instrument: Instrument.violins_lead), // Violins lead
+            // // Extra added tracks
+            // new CueInfo(trackStart: 48, logicStart: 8, muteStart: 46, instrument: Instrument.oboe, trackLength: 32),
+            // new CueInfo(trackStart: 96, logicStart: 8, muteStart: 17, instrument: Instrument.violins_lead, trackLength: 4), // Violins lead
+
+            new CueInfo(trackStart: 4, logicStart: 2, muteStart: 4, instrument: Instrument.glock, trackLength: 16),
+            new CueInfo(trackStart: 12, logicStart: 2, muteStart: 32, instrument: Instrument.harpsichord, trackLength: 8),
+            new CueInfo(trackStart: 16, logicStart: 2, muteStart: 8, instrument: Instrument.violins_extra, trackLength: 5),
+            new CueInfo(trackStart: 28, logicStart: 2, muteStart: 8, instrument: Instrument.violins_extra, trackLength: 16),
+            new CueInfo(trackStart: 44, logicStart: 2, muteStart: 8, instrument: Instrument.harpsichord, trackLength: 16),
+            new CueInfo(trackStart: 52, logicStart: 2, muteStart: 8, instrument: Instrument.violins_extra, trackLength: 8),
+            new CueInfo(trackStart: 76, logicStart: 2, muteStart: 8, instrument: Instrument.glock, trackLength: 16),
+            new CueInfo(trackStart: 84, logicStart: 2, muteStart: 32, instrument: Instrument.harpsichord, trackLength: 16),
+            new CueInfo(trackStart: 84, logicStart: 2, muteStart: 32, instrument: Instrument.oboe, trackLength: 8),
 
 
+            new CueInfo(trackStart: 154, logicStart: 2, muteStart: 8, instrument: Instrument.harpsichord, trackLength: 48),
+            new CueInfo(trackStart: 186, logicStart: 2, muteStart: 8, instrument: Instrument.glock, trackLength: 4),
+            new CueInfo(trackStart: 194, logicStart: 2, muteStart: 32, instrument: Instrument.oboe, trackLength: 4),
+
+
+            //// Extra added tracks
+            new CueInfo(trackStart: 12, logicStart: 2, muteStart: 46, instrument: Instrument.oboe, trackLength: 8),
+            new CueInfo(trackStart: 24, logicStart: 2, muteStart: 17, instrument: Instrument.violins_lead, trackLength: 189), // Violins lead
 
         };
 
-        m_cueInfos.Sort((lhs, rhs) => 
+        m_cueInfos.Sort((lhs, rhs) =>
         {
             if (lhs.initBeat == rhs.initBeat)
                 return 0;
@@ -103,7 +121,7 @@ public class GameManager
         m_metronome.onBeatTickedCallback += new Metronome.OnBeatTickCallback(OnBeat);
 
         m_audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        
+
         m_audioManager.SetInstrumentVolume(Instrument.harpsichord, 0.0f);
         m_audioManager.SetInstrumentVolume(Instrument.glock, 0.0f);
         m_audioManager.SetInstrumentVolume(Instrument.violins_extra, 0.0f);
@@ -111,7 +129,7 @@ public class GameManager
 
         // For youtube recording due to licensing
         // m_audioManager.MuteInstrument(Instrument.drums, true);
-        
+
         float bmpSec = (float)m_metronome.bpm / 60.0f;
         float songLength = m_audioManager.GetSonglength();
 
@@ -165,26 +183,28 @@ public class GameManager
 
     public struct CueInfo
     {
-        public CueInfo(int trackStart, int logicStart, int muteStart, Instrument instrument)
+        public CueInfo(int trackStart, int logicStart, int muteStart, int trackLength, Instrument instrument)
         {
-            initBeat = trackStart - Math.Max(logicStart, muteStart);
-            countdown = trackStart - initBeat;
-            startCueLogic = logicStart - 1;
+            initBeat = (trackStart * 4 - Math.Max(logicStart * 4, muteStart));
+            countdown = trackStart * 4 - initBeat;
+            startCueLogic = logicStart * 4 - 1;
             beatToMute = muteStart - 1;
             this.instrument = instrument;
+            this.trackLength = trackLength * 4;
         }
 
         // At what beat does the instrument actually enter?
         // How many beats before do we initiate the logic?
         // How many beats before do we mute the track?
 
+        public int trackLength;
         public int initBeat; // At which beat do we init the cue?
         public int countdown; // How many beats countdown is there?
         public int startCueLogic; // At which beat do we start the cue logic?
         public int beatToMute; // At which beat do we mute the instrument?
         public Instrument instrument; // Which instrument are we talking about?
     };
-    
+
     List<CueInfo> m_cueInfos;
 
     [SerializeField]
