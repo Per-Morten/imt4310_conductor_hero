@@ -113,6 +113,7 @@ public class MotionTracker : MonoBehaviour
         if(m_rightControllerTracking.menuPressed)
         {
             // TODO: Could potentially wait and enable metronome when first calibration is done here. 
+            m_metronome.gameObject.SetActive(true);
             var oldPosition = m_sphereContainer.transform.position;
             m_sphereContainer.transform.position = new Vector3(oldPosition.x, m_rightControllerTracking.transform.position.y, oldPosition.z);
         }
@@ -159,9 +160,7 @@ public class MotionTracker : MonoBehaviour
     // Gets called on every metronome beat. 
     public void MetronomeCallback(int beatID)
     {
-        var oldIndex = m_nextSphereIndexStruct.nextSphereIndex;
         var oldVisualIndex = m_nextSphereIndexStruct.nextVisualSphereIndex;
-        m_nextSphereIndexStruct.nextSphereIndex = (beatID % NUM_BEATS_PER_MEASURE) + 1;
         m_nextSphereIndexStruct.nextVisualSphereIndex = (beatID % NUM_BEATS_PER_MEASURE) + 1;
 
         // Update visuals
@@ -184,11 +183,14 @@ public class MotionTracker : MonoBehaviour
             }
         }
 
-        // If the index already was updated through OnSphereCollision() we need to go back to its updated value after updating the visuals
+        // If the index already was updated through OnSphereCollision() we have no need to update
         if (m_nextSphereIndexStruct.m_alreadyUpdated)
         {
-            m_nextSphereIndexStruct.nextSphereIndex = oldIndex;
             m_nextSphereIndexStruct.m_alreadyUpdated = false;
+        }
+        else
+        {
+            m_nextSphereIndexStruct.nextSphereIndex = (beatID % NUM_BEATS_PER_MEASURE) + 1;
         }
     }
 

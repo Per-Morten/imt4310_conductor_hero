@@ -38,14 +38,14 @@ using Instrument = AudioManager.Instrument;
  *      NOTE: Seems to have improved when the player actually stands on the sweet spot which is where the 
  *      feet are supposed to be on the level. 
  * 
- * A better visual indicator for when the song starts would be nice
+ * A better visual indicator for when the song starts would be nice (DONEISH)
  *      Having the player start the song instead. 
  *      Song starts when player hits first cue for example.
  *      We need to give start/stop points for giving out score. 
  * 
  * Most people seem to be too focused on the bubbles
  *      They dont seem to notice the environment as a result
- *      Letting players start when they want could give them the time to look around. 
+ *      Letting players start when they want could give them the time to look around. (DONEISH)
  * 
  * Having the table at the bottom of your peripheral vision would be nice
  *      This is another scaling question

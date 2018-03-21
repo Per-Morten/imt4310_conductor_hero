@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-
     [SerializeField]
     private AudioManager m_audiomanager;
     private float volume;
@@ -18,7 +17,7 @@ public class HUD : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        m_view = GameObject.Find("volumeFG").GetComponent<Image>();
+        m_view = GetComponentInChildren<Image>();
         volume = m_audiomanager.GetInstrumentVolume(m_audiomanager.GetFirstInstrument());
         m_fillAmount = volume;
         UpdateView();

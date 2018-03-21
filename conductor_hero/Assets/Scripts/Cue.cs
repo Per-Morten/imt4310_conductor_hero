@@ -14,7 +14,10 @@ public class Cue
     public void Start()
     {
         m_text = gameObject.GetComponentInChildren<Text>();
-        m_trailRenderer = gameObject.GetComponentInChildren<TrailRenderer>();
+
+        // Fun fact: GetComponentInChildren also searches the parent so this is a hack to fix that. 
+        m_trailRendererEdge = GetComponentsInChildren<TrailRenderer>()[1];
+        m_trailRendererCore = GetComponent<TrailRenderer>();
         successPosition = GameObject.Find(gameObject.name + "_pos").GetComponent<Transform>();
 
         if (gameObject.name == "oboe")
@@ -177,12 +180,12 @@ public class Cue
     private void TransitionToState(State state)
     {
         // TODO: REFACTOR THIS SHIT!
-        m_trailRenderer.enabled = false;
+        m_trailRendererEdge.enabled = false;
         m_state = state;
         if (state == State.countdown)
         {
             m_angle = 0.0f;
-            m_trailRenderer.enabled = true;
+            m_trailRendererEdge.enabled = true;
 
             m_rotationSpeed = 360.0f / ((60.0f / (float)m_metronome.bpm) * 4.0f);
         }
@@ -197,7 +200,7 @@ public class Cue
             gameObject.transform.position = idlePosition.position;
         }
         if (state == State.success)
-        {
+        { 
             //m_audioManager.MuteInstrument(m_trackToUnmute, false);
             m_volumeState = VolumeState.unmute;
             m_startTime = (float)AudioSettings.dspTime;
@@ -205,8 +208,9 @@ public class Cue
             m_speed = m_length * 4.0f;
             gameObject.transform.position = countdownPosition.position;
 
-            StartAnimation();
+            m_trailRendererCore.enabled = true;
 
+            StartAnimation();
         }
         if (state == State.failed)
         {
@@ -307,7 +311,7 @@ public class Cue
 
     Text m_text;
 
-    TrailRenderer m_trailRenderer;
+    TrailRenderer m_trailRendererEdge;
 
     [SerializeField]
     Transform countdownPosition;
@@ -328,4 +332,6 @@ public class Cue
     GameManager m_gameManager;
 
     List<Animation> m_animations;
+
+    private TrailRenderer m_trailRendererCore;
 }
