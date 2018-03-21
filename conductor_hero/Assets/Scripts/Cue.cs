@@ -155,14 +155,14 @@ public class Cue
             TransitionToState(State.countdown);
 
         // Hack for testing music
-        if (m_state == State.countdown && m_beatCountdown == 0)
-            TransitionToState(State.success);
+        //if (m_state == State.countdown && m_beatCountdown == 0)
+        //    TransitionToState(State.success);
 
         // Comment back in when finished testing music
-        //if (m_state == State.countdown && m_beatCountdown <= -2)
-        //{
-        //    TransitionToState(State.failed);
-        //}
+        if (m_state == State.countdown && m_beatCountdown <= -2)
+        {
+            TransitionToState(State.failed);
+        }
 
         if (m_state == State.countdown)
         {
