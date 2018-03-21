@@ -25,7 +25,7 @@ public class MotionTracker : MonoBehaviour
     private List<MotionTrackerSphere> m_trackerSpheres;
 
     [SerializeField]
-    private GameManager gameManager;
+    private GameManager m_gameManager;
 
     private const int NUM_BEATS_PER_MEASURE = 4;
 
@@ -78,13 +78,9 @@ public class MotionTracker : MonoBehaviour
         private int m_nextSphereIndex;
         private int m_nextVisualSphereIndex;
     }
-
     private NextSphereIndex m_nextSphereIndexStruct;
 
     [Header("Interpolation Related")]
-    [SerializeField]
-    private List<Transform> m_cubicBezierPoints = new List<Transform>();
-
     [SerializeField]
     private Transform m_trailRendererSphereTransform;
 
@@ -114,6 +110,12 @@ public class MotionTracker : MonoBehaviour
             m_interpolationTimer += Time.deltaTime * m_interpolationSpeed;
             m_trailRendererSphereTransform.position = Vector3.Lerp(m_interpolationStartPos, m_interpolationEndPos, m_interpolationVelocity.Evaluate(m_interpolationTimer));
         }
+        if(m_rightControllerTracking.menuPressed)
+        {
+            // TODO: Could potentially wait and enable metronome when first calibration is done here. 
+            var oldPosition = m_sphereContainer.transform.position;
+            m_sphereContainer.transform.position = new Vector3(oldPosition.x, m_rightControllerTracking.transform.position.y, oldPosition.z);
+        }
     }
 
     /// <summary>
@@ -134,7 +136,7 @@ public class MotionTracker : MonoBehaviour
                 // Give some visual feedback
                 Instantiate(m_particlePrefab, sphere.transform);
 
-                gameManager.AddScore(1);
+                m_gameManager.AddScore(1);
             }
             else
             {

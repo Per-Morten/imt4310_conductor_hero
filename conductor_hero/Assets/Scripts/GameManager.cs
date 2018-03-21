@@ -11,20 +11,20 @@ using Instrument = AudioManager.Instrument;
  * In general though, if you are into it, it seems to work pretty well. 
  * 
  * Other comments on improvements:
- * Lines interpolating between the spheres to show your movement pattern.
+ * Lines interpolating between the spheres to show your movement pattern. (DONE)
  *      Small pulsating circles from where the spheres are on beat once they are invisible. 
  *      So you know where the beat is without having the spheres.
  *      A better visual indicator for what the first beat of a measure is. 
  *          Bigger explosion on the first beat for example. 
  * 
- * +1/+10 popups on the score whenever score is added. 
+ * +1/+10 popups on the score whenever score is added. (DONE)
  * 
  * Maybe have the progress bar pulse as well (we'll see)
  * 
  * We're counting points for before the song starts, we want to fix that
  *      Count points on the first cue and onwards. 
  * 
- * Improve visuals on the ring around cues
+ * Improve visuals on the ring around cues (DONE)
  * 
  * When was it most boring?
  *      When there are the least cue's
@@ -32,7 +32,7 @@ using Instrument = AudioManager.Instrument;
  *      but smaller play sessions would probably increase engagement when your interaction
  *      with the world is fairly static)
  * 
- * We need to calibrate the height of the spheres related to the headset height
+ * We need to calibrate the height of the spheres related to the headset height (DONE)
  *      Different heights gives different arm lengths as well. 
  *      So we might want to scale the distance away from cue's depending on height as well
  *      NOTE: Seems to have improved when the player actually stands on the sweet spot which is where the 
@@ -67,6 +67,9 @@ public class GameManager
 {
     [SerializeField]
     private Text m_scoreText;
+
+    [SerializeField]
+    private GameObject m_scoreUpdateFeedbackPrefab;
 
     void Start()
     {
@@ -142,7 +145,6 @@ public class GameManager
             m_cueSignals[(int)Instrument.violas_lead].StartAnimation();
             m_cueSignals[(int)Instrument.violins_lead].StartAnimation();
             m_cueSignals[(int)Instrument.bass].StartAnimation();
-
         }
     }
 
@@ -155,6 +157,10 @@ public class GameManager
         //double total_score = Math.Round(Convert.ToDouble(song_length) * bmpSec);
         string.Format("{0}/{1}", m_score, m_maxScore);
         m_scoreText.text = string.Format("{0}/{1}", m_score, m_maxScore);
+
+        var scoreFeedback = Instantiate(m_scoreUpdateFeedbackPrefab, m_scoreText.transform.parent);
+        scoreFeedback.GetComponent<Text>().text = "+" + points.ToString();
+
     }
 
     [SerializeField]

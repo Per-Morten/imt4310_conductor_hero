@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_scoreText: {fileID: 0}
+  m_scoreUpdateFeedbackPrefab: {fileID: 1144121070617802, guid: 56030f6f5f430644592ae4e03d213ea3,
+    type: 2}
   m_cueSignals:
   - {fileID: 0}
   - {fileID: 0}
