@@ -53,6 +53,8 @@ public class AudioManager
         {
             m_sfxTracks[value] = Resources.Load<AudioClip>("Sounds/" + value.ToString());
         }
+
+        //m_sfxSource.mute = true;
     }
 
     public void PlayMusic(double time)

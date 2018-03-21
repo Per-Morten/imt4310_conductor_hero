@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
- * When you first allow someone to cue an instrument you have to make sure 
- * that there are multiple cues for the instrument throughout the song 
+ * When you first allow someone to cue an instrument you have to make sure
+ * that there are multiple cues for the instrument throughout the song
  */
 
 public class Cue
@@ -47,10 +47,12 @@ public class Cue
             {
                 GameObject.Find(gameObject.name + "_anim").GetComponent<BeatBounce>(),
             };
-            
+
         }
 
         StopAnimation();
+
+        m_renderer = GetComponent<Renderer>();
     }
 
     public void ReInit(GameManager gm, AudioManager am, Metronome met, GameManager.CueInfo info)
@@ -66,8 +68,10 @@ public class Cue
         Renderer r = gameObject.GetComponent<Renderer>();
         r.material.color = new Color(0.5f, 0.5f, 1.0f);
 
+        m_trailRendererCore.enabled = false;
 
-        Debug.LogFormat("Countdown: {0}", m_beatCountdown);
+
+        //Debug.LogFormat("Countdown: {0}", m_beatCountdown);
 
     }
 
@@ -92,7 +96,7 @@ public class Cue
 
             foreach (var i in m_bounces)
                 i.StopBouncing();
-            
+
         }
     }
 
@@ -137,7 +141,8 @@ public class Cue
     public void OnBeat(int beatID)
     {
         m_beatCountdown--;
-        if (m_beatCountdown == m_info.beatToMute)
+        // Negative here because at this point we are below 0
+        if (m_beatCountdown == m_info.beatToMute || m_beatCountdown == -m_info.trackLength)
         {
             m_volumeState = VolumeState.mute;
             StopAnimation();
@@ -150,14 +155,14 @@ public class Cue
             TransitionToState(State.countdown);
 
         // Hack for testing music
-        //if (m_state == State.countdown && m_beatCountdown == 0)
-        //    TransitionToState(State.success);
+        if (m_state == State.countdown && m_beatCountdown == 0)
+            TransitionToState(State.success);
 
         // Comment back in when finished testing music
-        if (m_state == State.countdown && m_beatCountdown <= -2)
-        {
-            TransitionToState(State.failed);
-        }
+        //if (m_state == State.countdown && m_beatCountdown <= -2)
+        //{
+        //    TransitionToState(State.failed);
+        //}
 
         if (m_state == State.countdown)
         {
@@ -180,6 +185,7 @@ public class Cue
     private void TransitionToState(State state)
     {
         // TODO: REFACTOR THIS SHIT!
+        m_renderer.enabled = true;
         m_trailRendererEdge.enabled = false;
         m_state = state;
         if (state == State.countdown)
@@ -194,7 +200,7 @@ public class Cue
             m_startTime = (float)AudioSettings.dspTime;
             m_length = Vector3.Distance(idlePosition.position, countdownPosition.position);
 
-            // Multiplied by 3.0f instead of 4, as we are curently "in" a beat, 
+            // Multiplied by 3.0f instead of 4, as we are curently "in" a beat,
             // and therefore only have 3 beats left to cover distance.
             m_speed = m_length / ((60.0f / (float)m_metronome.bpm) * 3.0f);
             gameObject.transform.position = idlePosition.position;
@@ -214,13 +220,16 @@ public class Cue
         }
         if (state == State.failed)
         {
-            Debug.Log("Fail");
             Renderer r = gameObject.GetComponent<Renderer>();
             r.material.color = new Color(1.0f, 0.0f, 0.0f);
             m_startTime = (float)AudioSettings.dspTime;
             m_length = Vector3.Distance(countdownPosition.position, idlePosition.position);
             m_speed = m_length * 2.0f;
             gameObject.transform.position = idlePosition.position;
+        }
+        if (state == State.idle)
+        {
+            m_renderer.enabled = false;
         }
     }
 
@@ -229,6 +238,10 @@ public class Cue
         float distCovered = ((float)AudioSettings.dspTime - m_startTime) * m_speed;
         float fracJourney = distCovered / m_length;
         transform.position = Vector3.Lerp(countdownPosition.position, successPosition.position, fracJourney);
+        if (transform.position == successPosition.position)
+        {
+            TransitionToState(State.idle);
+        }
     }
 
     private void PlayFailAnimation()
@@ -236,6 +249,11 @@ public class Cue
         float distCovered = ((float)AudioSettings.dspTime - m_startTime) * m_speed;
         float fracJourney = distCovered / m_length;
         transform.position = Vector3.Lerp(countdownPosition.position, idlePosition.position, fracJourney);
+        if (transform.position == idlePosition.position)
+        {
+            TransitionToState(State.idle);
+        }
+
     }
 
     private void PlayRisingAnimation()
@@ -279,7 +297,7 @@ public class Cue
     {
         idle,
         rising, // Use 1 bar rising out from the table
-        countdown, // 1 bar counting down from 4 to 1. 
+        countdown, // 1 bar counting down from 4 to 1.
         success, // Interpolate to the orchestra
         failed, // Fall limp to the ground
     };
@@ -295,6 +313,8 @@ public class Cue
     Metronome m_metronome;
     GameManager.CueInfo m_info;
     List<BeatBounce> m_bounces;
+
+    Renderer m_renderer;
 
     VolumeState m_volumeState;
 
