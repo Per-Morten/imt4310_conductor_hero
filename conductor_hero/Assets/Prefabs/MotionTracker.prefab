@@ -60,8 +60,7 @@ MonoBehaviour:
     type: 2}
   m_onBeatThreshold: 0.15
   m_sphereContainer: {fileID: 0}
-  gameManager: {fileID: 0}
-  m_cubicBezierPoints: []
+  m_gameManager: {fileID: 0}
   m_trailRendererSphereTransform: {fileID: 0}
   m_interpolationSpeed: 5
   m_interpolationVelocity:
