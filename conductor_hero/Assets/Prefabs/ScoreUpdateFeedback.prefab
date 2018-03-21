@@ -87,14 +87,14 @@ MonoBehaviour:
       outSlope: -0
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.3618796
-      value: 0.34294692
+      time: 0.39421296
+      value: 0.2743205
       inSlope: 2.6676123
       outSlope: 2.6676123
       tangentMode: 0
     - serializedVersion: 2
-      time: 0.50157166
-      value: 0.9937515
+      time: 0.673953
+      value: 1.0142817
       inSlope: 1
       outSlope: 1
       tangentMode: 0
