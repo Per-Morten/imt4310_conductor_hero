@@ -75,20 +75,6 @@ public class GameManager
     {
         m_cueInfos = new List<CueInfo>
         {
-            // new CueInfo(trackStart: 16, logicStart: 8, muteStart: 14, instrument: Instrument.glock, trackLength: 64),
-            // new CueInfo(trackStart: 48, logicStart: 8, muteStart: 46, instrument: Instrument.harpsichord, trackLength: 32),
-            // new CueInfo(trackStart: 64, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra, trackLength: 20),
-            // new CueInfo(trackStart: 112, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra, trackLength: 4),
-            // new CueInfo(trackStart: 176, logicStart: 8, muteStart: 8, instrument: Instrument.harpsichord, trackLength: 4),
-            // new CueInfo(trackStart: 208, logicStart: 8, muteStart: 8, instrument: Instrument.violins_extra, trackLength: 4),
-            // new CueInfo(trackStart: 304, logicStart: 8, muteStart: 8, instrument: Instrument.glock, trackLength: 4),
-            // new CueInfo(trackStart: 624, logicStart: 8, muteStart: 8, instrument: Instrument.harpsichord, trackLength: 4),
-            // new CueInfo(trackStart: 752, logicStart: 8, muteStart: 8, instrument: Instrument.glock, trackLength: 4),
-
-            // // Extra added tracks
-            // new CueInfo(trackStart: 48, logicStart: 8, muteStart: 46, instrument: Instrument.oboe, trackLength: 32),
-            // new CueInfo(trackStart: 96, logicStart: 8, muteStart: 17, instrument: Instrument.violins_lead, trackLength: 4), // Violins lead
-
             new CueInfo(trackStart: 4, logicStart: 2, muteStart: 4, instrument: Instrument.glock, trackLength: 16),
             new CueInfo(trackStart: 12, logicStart: 2, muteStart: 32, instrument: Instrument.harpsichord, trackLength: 8),
             new CueInfo(trackStart: 16, logicStart: 2, muteStart: 8, instrument: Instrument.violins_extra, trackLength: 5),
@@ -100,15 +86,13 @@ public class GameManager
             new CueInfo(trackStart: 84, logicStart: 2, muteStart: 32, instrument: Instrument.oboe, trackLength: 8),
 
 
-            new CueInfo(trackStart: 154, logicStart: 2, muteStart: 8, instrument: Instrument.harpsichord, trackLength: 48),
-            new CueInfo(trackStart: 186, logicStart: 2, muteStart: 8, instrument: Instrument.glock, trackLength: 4),
-            new CueInfo(trackStart: 194, logicStart: 2, muteStart: 32, instrument: Instrument.oboe, trackLength: 4),
+            new CueInfo(trackStart: 156, logicStart: 2, muteStart: 8, instrument: Instrument.harpsichord, trackLength: 48),
+            new CueInfo(trackStart: 188, logicStart: 2, muteStart: 8, instrument: Instrument.glock, trackLength: 16),
+            new CueInfo(trackStart: 196, logicStart: 2, muteStart: 32, instrument: Instrument.oboe, trackLength: 8),
 
 
             //// Extra added tracks
             new CueInfo(trackStart: 12, logicStart: 2, muteStart: 46, instrument: Instrument.oboe, trackLength: 8),
-            new CueInfo(trackStart: 24, logicStart: 2, muteStart: 17, instrument: Instrument.violins_lead, trackLength: 189), // Violins lead
-
         };
 
         m_cueInfos.Sort((lhs, rhs) =>
@@ -137,9 +121,6 @@ public class GameManager
         float songLength = m_audioManager.GetSonglength();
 
         m_maxScore = (int)(songLength * bmpSec) + m_cueInfos.Count * 10;
-
-        //foreach (var i in m_cueSignals)
-        //    i.StopAnimation();
     }
 
     void OnBeat(int beatID)
@@ -189,7 +170,7 @@ public class GameManager
 
     public struct CueInfo
     {
-        public CueInfo(int trackStart, int logicStart, int muteStart, int trackLength, Instrument instrument)
+        public CueInfo(int trackStart, int logicStart, int trackLength, Instrument instrument, int muteStart = 8)
         {
             initBeat = (trackStart * 4 - Math.Max(logicStart * 4, muteStart));
             countdown = trackStart * 4 - initBeat;
