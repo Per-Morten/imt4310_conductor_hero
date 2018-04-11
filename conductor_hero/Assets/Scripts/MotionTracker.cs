@@ -113,7 +113,7 @@ public class MotionTracker : MonoBehaviour
         if(m_rightControllerTracking.menuPressed)
         {
             // TODO: Could potentially wait and enable metronome when first calibration is done here. 
-            m_metronome.gameObject.SetActive(true);
+            m_metronome.enabled = true;
             var oldPosition = m_sphereContainer.transform.position;
             m_sphereContainer.transform.position = new Vector3(oldPosition.x, m_rightControllerTracking.transform.position.y, oldPosition.z);
         }
