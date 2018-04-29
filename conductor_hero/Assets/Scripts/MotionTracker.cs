@@ -101,6 +101,7 @@ public class MotionTracker : MonoBehaviour
         m_leftControllerPointer.PointerOut += new PointerEventHandler(OnPointerOut);
         m_metronome.onBeatTickedCallback += MetronomeCallback;
         m_trackerSpheres = new List<MotionTrackerSphere>(m_sphereContainer.GetComponentsInChildren<MotionTrackerSphere>());
+        m_rightControllerTracking.MenuButtonUnclicked += new ClickedEventHandler(OnMenuRelease);
     }
 
     private void Update()
@@ -110,10 +111,9 @@ public class MotionTracker : MonoBehaviour
             m_interpolationTimer += Time.deltaTime * m_interpolationSpeed;
             m_trailRendererSphereTransform.position = Vector3.Lerp(m_interpolationStartPos, m_interpolationEndPos, m_interpolationVelocity.Evaluate(m_interpolationTimer));
         }
+
         if(m_rightControllerTracking.menuPressed)
         {
-            // TODO: Could potentially wait and enable metronome when first calibration is done here. 
-            m_metronome.enabled = true;
             var oldPosition = m_sphereContainer.transform.position;
             m_sphereContainer.transform.position = new Vector3(oldPosition.x, m_rightControllerTracking.transform.position.y, oldPosition.z);
         }
@@ -211,6 +211,11 @@ public class MotionTracker : MonoBehaviour
             }
         }
         return null;
+    }
+
+    void OnMenuRelease(object sender, ClickedEventArgs e)
+    {
+        m_metronome.enabled = true;
     }
 
     #region PointedObjectCallbacks

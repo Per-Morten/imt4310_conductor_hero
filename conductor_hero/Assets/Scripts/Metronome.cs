@@ -62,7 +62,7 @@ public class Metronome
             m_beatID++;
             m_ticked = true;
             // Disabled for youtube recording
-            manager.PlaySoundEffect(AudioManager.SfxTrack.ButtonPress, AudioSettings.dspTime);
+            //manager.PlaySoundEffect(AudioManager.SfxTrack.ButtonPress, AudioSettings.dspTime);
 
             if (onBeatTickedCallback != null)
             {

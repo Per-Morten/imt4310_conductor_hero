@@ -109,7 +109,7 @@ public class GameManager
         m_audioManager.SetInstrumentVolume(Instrument.oboe, 0.0f);
 
         // For youtube recording due to licensing
-        // m_audioManager.MuteInstrument(Instrument.drums, true);
+        m_audioManager.MuteInstrument(Instrument.drums, true);
 
         float bmpSec = (float)m_metronome.bpm / 60.0f;
         float songLength = m_audioManager.GetSonglength();
